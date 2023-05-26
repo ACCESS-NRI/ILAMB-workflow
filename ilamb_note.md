@@ -1,31 +1,44 @@
 # ilamb-tutorial
 
-## Background
+SB> Check with Rhaegar and possibly add text here to say this tutorial is also useful for ILAMB and IOMB to start with.<SB
+                                                                                                   
+## 1) Background: International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB)
 
 As earth system models (ESMs) become increasingly complex, there is a growing need for comprehensive and multi-faceted evaluation of model projections. The International Land Model Benchmarking (ILAMB) project is a model-data intercomparison and integration project designed to improve the performance of land models and, in parallel, improve the design of new measurement campaigns to reduce uncertainties associated with key land surface processes.
 
-For people who do not use ilamb before, we suggest you read from the beginning, if you know the basic principle of ilamb and used ilamb before, you can start from [Guild for using on NCI](#guild-for-use-on-nci) 
+If you have used (and installed) `ilamb` on NCI and know the basic principle of `ilamb`, you can start from [Section 5) Guide for using ilamb on NCI](#5-guide-for-use-on-nci).
 
-## Installation
+## 2) Installing `ilamb`
 
-For installation, the ilamb official tutorial provide a very detailed document, you can find it [here](https://www.ilamb.org/doc/install.html). For NCI users, we have build a conda environment with ilamb installed, which you can use directly(About how to load the environment, we will explain it in detail in next few part).
-
-## run the ilamb
-To run the ilamb, there is three things you may need to do first: 
-
-1.get your `ILAMB_ROOT` will organised.
-
-2.wright your own `config` file.
-
-3.and the last thing is optional but we recommand that you get the `shapefiles` of natural earth locally cause when you run the `ilamb`, it will call the cartopy package to draw some picture, and if you need to run `ilamb` in a internet-free environment, you will meet some error, so we recommand you to download it first.  
-
-
-### ILAMB_ROOT dir
-
-ilamb comes with no data, so to use this tool to do model-confrontation, you will need to set the observations and modeleresults. `ILAMB_ROOT` is the path to the observations and modelresults, The following tree represents the organization of an example contents of data:
+For NCI users, ACCESS-NRI is providing a `conda` environment called `ilamb_dev` through the `xp65` project, with ilamb installed. You can load and activate it via:
 
 ```
-ILAMB_ROOT
+>>> module use /g/data/xp65/public/modules
+>>> module load conda/ilamb_dev
+>>> conda activate ilamb_dev
+```
+
+We will soon add `ilamb` also to the ACCESS-NRI MED `conda` environment, `access-med` under project`xp65`.
+
+If you want to install `ilamb` yourself, please follow the official installation instructions at [https://www.ilamb.org/doc/install.html](https://www.ilamb.org/doc/install.html).
+
+## 3) Configuring `ilamb`
+
+Before you can run `ilamb`, you need to configure a few things:
+
+3.1. [Organise the ILAMB_ROOT path](#31-organise-the-ilamb_root-path)
+3.2. [Set up a `config` file](#32-set-up-a-config-file)
+3.3. (Optional online, necessary offline): [Download a `shapefiles` files locally](#33-download-shapefiles-files-locally) to run `ilamb` without internet connection (e.g. for NCI compute nodes)
+
+### 3.1. Organise the ILAMB_ROOT path
+
+`ilamb` demands files to be organised in a specific directory structure of `DATA` and `MODELS`.
+
+If you do not have your own files yet, you can download and use [example files](https://www.ilamb.org/Downloads/minimal_ILAMB_data.tgz) provided as part of the  of `ilamb`'s [*First Steps* Tutorial](https://www.ilamb.org/doc/first_steps.html)
+
+The following tree represents the organization of the contents of this extracted sample data (Note: We renamed the main directory name):
+```
+ILAMB_ROOT (renamed from "ILAMB_sample")
 ├── DATA
 │   ├── albedo
 │   │   └── CERES
@@ -43,10 +56,16 @@ ILAMB_ROOT
 
 There are two main branches in this directory. The first is the `DATA` directory–this is where we keep the observational datasets each in a subdirectory bearing the name of the variable. While not strictly necesary to follow this form, it is a convenient convention. The second branch is the `MODEL` directory in which we see a single model result from CLM.
 
-#### DATA
+#### 3.1.1. Add files to DATA
 
-Although you can organised your own data follow the way above, or you can add some datasets follow [this way](https://www.ilamb.org/doc/add_data.html), `ilamb` has a method `ilamb_fetch` to help user get the observitional dataset. From a commandline prompt, run `ilamb-fetch`. You should see output similar to the following:
+There is a lot of DATA available to add. Take a look at https://www.ilamb.org/ILAMB-Data/ and https://www.ilamb.org/IOMB-Data/ for extensive lists for ILAMB-Data (land modelling) and IOMB-Data (ocean modelling).
 
+`ilamb` has a commandline prompt to add new DATA in a substructure. To fetch all available DATA from the website, you can simply go to your $ILAMB_ROOT and type
+```
+>>> ilamb-fetch
+```
+
+The command will compare the above website with your current DATA and make suggestions for downloads:
 ```
 Comparing remote location:
 
@@ -60,24 +79,24 @@ I found the following files which are missing, out of date, or corrupt:
 
       .//DATA/twsa/GRACE/twsa_0.5x0.5.nc
       .//DATA/rlus/CERES/rlus_0.5x0.5.nc
-      ...
+      ... (we have abbreviated the extensive list here)
 
 Download replacements? [y/n]
 ```
 
-This tool looks at a remote location (by default the location of the land datasets) and compares it to a local location (by defult ILAMB_ROOT or ./). It detects for the presence and version of the data on your local machine and populates a list for download. The tool will then prompt you to rerun to check for file validity.
-
-This tool can be used to download other data collections as well. If you need the ocean IOMB data, then you can change the remote location by running:
+You can use `ilamb-fetch -h` to see how you can adjust the remote and local locations. If you want to download IOMB-Data, you can for example use
 ```
 ilamb-fetch --remote_root https://www.ilamb.org/IOMB-Data/
 ```
 
-
-#### MODEL
+    
+#### 3.1.2. Add files to MODEL
+    
+SB> CONTINUE HERE <SB
 
 This part is about the `model-results` you want to comfront with the observitions or with other models. Typically you can build your own `MODEL` follow the example above or follow [this way](https://www.ilamb.org/doc/add_model.html) as well. For `NCI` users we have provide the `ILAMB_ROOT` with all the observational datasets on the `ilamb` official web and the `ACCESS-ESM1_5` model result for user to comfront, maybe in the future we will provide more observational datasets and model-results datatsets.
 
-### Configure file
+### 3.2. Set up a `config` file
 
 Now that we have data, we need to setup a file which the ILAMB package will use to initiate a benchmark study. we use a simple example from the ilamb toturial to explain the basical usage of the `config file`, and we will explain each variable which you can modify in detail in the `config file`
 
@@ -199,6 +218,28 @@ weight              = 1
 
 For user who not familiar with those variables in config files, we suggest you use the default config files provide by ilamb, youcan find [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
 
+### 3.3. Download a `shapefiles` files locally
+
+You can download the `shapefiles` that are needed to run `ilamb` and `cartopy` offline here:
+
+- For Land: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_land.zip
+- For Ocean: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_ocean.zip
+
+You can put them on whatever path you like, but we recommend to use the parent directory of $ILAMB_ROOT, that is
+```
+├── ILAMB_ROOT
+├── shapefiles
+│   ├── ne_110m_land.shp
+│   └── ne_110m_ocean.shp
+```
+
+Finally, you need to define that path as `CARTOPY_DATA_DIR` via 
+```
+export CARTOPY_DATA_DIR=/path/where/you/downloaded/the/shapefiles/at
+```
+
+## 4. Run `ilamb`
+
 #### ilamb-run
 Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the command:
 ```
@@ -292,8 +333,8 @@ Here we have run the command on some inputs in our test directory. You will see 
 
 We have finish the introduction of basic `ilamb` usage. We believe you have some understanding of `ilamb` and cont wait to use it. if you still have any question or you want some developer level support, you can find more detail in their [official tutorial](https://www.ilamb.org/doc/tutorial.html). Nest we will start to teach you how to use `ilamb` on NCI in a convenient way.  
 
-## Guild for use on NCI
-For people who reach this part, you must have some basic understanding of ilamb and what to start your trip on NCI. so we make a "brief" guild for you.
+## 5) Guide for using `ilamb` on NCI
+For people who reach this part, you must have some basic understanding of ilamb and what to start your trip on NCI. so we make a quick guide for you.
 
 ### ILAMB_ROOT
 for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it for people to use, the structure is showing below:
