@@ -1,0 +1,29 @@
+ACCESS_ESM1-5_r1i1p1f1 ,  /g/data/kj13/users/yz9299/ilamb_test/ILAMB_ROOT/MODELS/r1i1p1f1  ,CMIP6
+#CMCC_ESM2_r1i1p1f1 ,  MODELS/CMCC-ESM2  ,   CMIP6
+#AWI-ESM-1-1-LR_r1i1p1f1, oi10_CMIP6_models/AWI-ESM-1-1-LR/r1i1p1f1,   CMIP6
+BCC-ESM1_r1i1p1f1,  oi10_CMIP6_models/BCC-ESM1/r1i1p1f1,    CMIP6
+CanESM5_r1i1p1f1,   oi10_CMIP6_models/CanESM5/r1i1p1f1,    CMIP6
+CanESM5-CanOE_r1i1p2f1,   oi10_CMIP6_models/CanESM5-CanOE/r1i1p2f1,    CMIP6
+CAS-ESM2-0_r1i1p1f1,  oi10_CMIP6_models/CAS-ESM2-0/r1i1p1f1,    CMIP6
+CESM2_r1i1p1f1,   oi10_CMIP6_models/CESM2/r1i1p1f1,    CMIP6
+CESM2-FV2_r1i1p1f1,    oi10_CMIP6_models/CESM2-FV2/r1i1p1f1,    CMIP6
+CESM2-WACCM_r1i1p1f1,    oi10_CMIP6_models/CESM2-WACCM/r1i1p1f1,    CMIP6
+CESM2-WACCM-FV2_r1i1p1f1,    oi10_CMIP6_models/CESM2-WACCM-FV2/r1i1p1f1,    CMIP6
+#CIESM_r1i1p1f1,     oi10_CMIP6_models/CIESM/r1i1p1f1,     CMIP6  
+CMCC-ESM2_r1i1p1f1,     oi10_CMIP6_models/CMCC-ESM2/r1i1p1f1,      CMIP6
+#CNRM-ESM2-1_r1i1p1f2,    oi10_CMIP6_models/CNRM-ESM2-1/r1i1p1f2,       CMIP6
+FIO-ESM-2-0_r1i1p1f1,      oi10_CMIP6_models/FIO-ESM-2-0/r1i1p1f1,      CMIP6
+#GFDL-ESM4_r1i1p1f1,     oi10_CMIP6_models/GFDL-ESM4/r1i1p1f1,      CMIP6
+#ICON-ESM-LR_r1i1p1f1,    oi10_CMIP6_models/ICON-ESM-LR/r1i1p1f1,     CMIP6
+#IITM-ESM_r1i1p1f1,     oi10_CMIP6_models/IITM-ESM/r1i1p1f1,     CMIP6
+MIROC-ES2H_r1i1p1f2,     oi10_CMIP6_models/MIROC-ES2H/r1i1p1f2,      CMIP6
+MIROC-ES2L_r1i1p1f2,     oi10_CMIP6_models/MIROC-ES2L/r1i1p1f2,      CMIP6
+#MPI-ESM-1-2-HAM_r1i1p1f1,     oi10_CMIP6_models/MPI-ESM-1-2-HAM/r1i1p1f1,      CMIP6
+#MPI-ESM1-2-HR_r1i1p1f1,     oi10_CMIP6_models/MPI-ESM1-2-HR/r1i1p1f1,      CMIP6
+#MPI-ESM1-2-LR_r1i1p1f1,      oi10_CMIP6_models/MPI-ESM1-2-LR/r1i1p1f1,     CMIP6
+MRI-ESM2-0_r1i1p1f1,     oi10_CMIP6_models/MRI-ESM2-0/r1i1p1f1,      CMIP6
+NESM3_r1i1p1f1,     oi10_CMIP6_models/NESM3/r1i1p1f1,     CMIP6
+#NorESM2-LM _r1i1p1f1,     oi10_CMIP6_models/NorESM2-LM/r1i1p1f1,      CMIP6
+#NorESM2-MM_r1i1p1f1,    oi10_CMIP6_models/NorESM2-MM/r1i1p1f1,     CMIP6
+TaiESM1_r1i1p1f1,     oi10_CMIP6_models/TaiESM1/r1i1p1f1,    CMIP6
+UKESM1-0-LL_r1i1p1f2,     oi10_CMIP6_models/UKESM1-0-LL/r1i1p1f2,     CMIP6

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#PBS -N test
+#PBS -l wd
+#PBS -P iq82
+#PBS -q express
+#PBS -l walltime=10:00:00  
+#PBS -l ncpus=48
+#PBS -l mem=190GB           
+#PBS -l jobfs=10GB        
+#PBS -l storage=gdata/kj13+gdata/fs38+gdata/oi10+gdata/xp65
+#PBS -v MODULEPATH=$MODULEPATH:/g/data/xp65/environments
+   
+module load conda/ilamb_dev
+export ILAMB_ROOT_PARENT=/g/data/kj13/admin/ILAMB
+export ILAMB_ROOT=$ILAMB_ROOT_PARENT/ILAMB_ROOT
+export CARTOPY_DATA_DIR=/g/data/kj13/users/yz9299/script_github_ilamb
+export BUILD_DIR=./ilamb_result/_build
+
+env
+
+rm -rf $BUILD_DIR
+mpiexec -n 8 ilamb-run --config CMIP6.cfg --model_setup ./intermodel.txt --regions global --build_dir $BUILD_DIR
