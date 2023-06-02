@@ -26,9 +26,9 @@ If you want to install `ilamb` yourself, please follow the official installation
 
 Before you can run `ilamb`, you need to configure a few things:
 
-3.1. [Organise the ILAMB_ROOT path](#31-organise-the-ilamb_root-path)
-3.2. [Set up a `config` file](#32-set-up-a-config-file)
-3.3. (Optional online, necessary offline): [Download a `shapefiles` files locally](#33-download-shapefiles-files-locally) to run `ilamb` without internet connection (e.g. for NCI compute nodes)
+3.1. [Organise the ILAMB_ROOT path](#31-organise-the-ilamb_root-path)  
+3.2. [Set up a `config` file](#32-set-up-a-config-file)  
+3.3. [Download a `shapefiles` files locally](#33-download-a-shapefiles-files-locally) (Optional online, necessary offline e.g. on NCI compute nodes)
 
 ### 3.1. Organise the ILAMB_ROOT path
 
@@ -89,12 +89,12 @@ You can use `ilamb-fetch -h` to see how you can adjust the remote and local loca
 ilamb-fetch --remote_root https://www.ilamb.org/IOMB-Data/
 ```
 
-    
-#### 3.1.2. Add files to MODEL
-    
-SB> CONTINUE HERE <SB
 
-This part is about the `model-results` you want to comfront with the observitions or with other models. Typically you can build your own `MODEL` follow the example above or follow [this way](https://www.ilamb.org/doc/add_model.html) as well. For `NCI` users we have provide the `ILAMB_ROOT` with all the observational datasets on the `ilamb` official web and the `ACCESS-ESM1_5` model result for user to comfront, maybe in the future we will provide more observational datasets and model-results datatsets.
+#### 3.1.2. Add files to MODEL
+  
+If you want to add your own `MODEL` to `ilamb`, you can do so by following [this description](https://www.ilamb.org/doc/add_model.html).
+  
+For `NCI` users, our `ilamb_dev` `conda` enrivonment already provides all observational datasets from the `ilamb` official web and the [ACCESS-ESM1_5](https://access-hive.org.au/configurations/access-esm/) model result for user at `ILAMB_ROOT`. Stay tune for more observational and model data or tell us which ones we should definitely add.
 
 ### 3.2. Set up a `config` file
 
