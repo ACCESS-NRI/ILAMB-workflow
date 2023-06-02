@@ -98,14 +98,18 @@ For `NCI` users, our `ilamb_dev` `conda` enrivonment already provides all observ
 
 ### 3.2. Set up a `config` file
 
-Now that we have data, we need to setup a file which the ILAMB package will use to initiate a benchmark study. we use a simple example from the ilamb toturial to explain the basical usage of the `config file`, and we will explain each variable which you can modify in detail in the `config file`
+Now that we have the data, we need to setup a `config` file which the `ilamb` package will use to initiate a benchmark study.  
 
-There is such a file which comes with the software package in the demo directory called `sample.cfg`. Navigate to the demo directory and open this file or view it [online](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/sample.cfg). We also reproduce it here for the purpose of this tutorial:
+`ilamb` provides default config files [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
+
+Below we explain both which variables you can define, but start by showing you the minimum setup from the [tutorial's](https://www.ilamb.org/doc/first_steps.html). `sample.cfg` [file](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/sample.cfg):
+
+#### Minimum configure file with a direct and a derived variable
+
 ```
 # This configure file specifies the variables
 
 [h1: Radiation and Energy Cycle]
-bgcolor  = "#FFECE6"
 
 [h2: Surface Upward SW Radiation]
 variable = "rsus"
@@ -121,45 +125,9 @@ derived  = "rsus/rsds"
 source   = "DATA/albedo/CERES/albedo_0.5x0.5.nc"
 ```
 
-We note that while the ILAMB package is written in python, this file contains no python and is written in a small configure language of our invention. Here we will go over this file line by line and explain how each entry functions.
+In brief: This file allows you to create different header descriptions of the experiments (`h1`: top level for grouping of variables, `h2`: sub-level for each variable), but most importantly the `variable`s that we will look into and their `source`. In the eaxmple, `rsus` (*Surface Upward Shortwave Radiation*) and `albedo` are the used variables. The latter is actually derived from two variables by dividing the *Surface Upward Shortwave Radiation* by the *Surface Downward Shortwave Radiation*, `derived = rsus/rsds`. Finally, sources are defined as `source` with a text-font header without `h1` or `h2`.
 
-At the top of the file, you see the following lines:
-```
-[h1: Radiation and Energy Cycle]
-bgcolor = "#FFECE6"
-```
-This is a tag that we use to tell the system that we will have a top level heading `h1` which we call *Radiation and Energy Cycle*. While you can name this section anything of your choosing, we have chosen this name as it is descriptive of the benchmarking activities we will perform. Also note that you may specify a background color here in hexadecimal format (we found this site to be helpful to play around with [colors](https://www.webfx.com/web-design/color-picker/ffece6/)). This color will be used in the output which we will show later. It is important to understand that heading are hierarchical–this heading owns everything underneath it until the next `h1` tag is found or the file ends. We use `h1` level headings to group variables of a given type to better organize the output.
-
-Below this, you will notice a second level heading which appears like this:
-```
-[h2: Surface Upward SW Radiation]
-variable = "rsus"
-```
-We will be looking at radiation here. The variable tag is the name of the `variable` inside the dataset which represents the variable of interest. Here `rsus` is a standard name used to represent *Surface Upward Shortwave Radiation*. We use h2 headings to represent a variable which we wish to compare.
-
-The next entry in the file appears as the following:
-```
-[CERES]
-source   = "DATA/rsus/CERES/rsus_0.5x0.5.nc"
-```
-First, notice the absence of a `h1` or `h2` tag. This indicates that this entry is a particular dataset of a given variable (our `h2`heading) of a given grouping (our `h1` heading). We have named it CERES as that is the name of the data source we have included. We only have to specify the location of the source dataset, relative to the environment variable we set earlier, `ILAMB_ROOT`.
-
-At this point we feel it important to mention that this is the minimum required to setup a benchmark study in this system. If you have an observational dataset which directly maps to a variable which is output by models as `rsus` is, you are done.
-
-However, it is possible that your dataset has no direct analog in the list of variables which models output and some manipulation is needed. We have support for when your dataset corresponds to an algebraic function of model variables. Consider the remaining entries in our sample:
-```
-[h2: Albedo]
-variable = "albedo"
-derived  = "rsus/rsds"
-
-[CERES]
-source   = "DATA/albedo/CERES/albedo_0.5x0.5.nc"
-```
-We have done two things here. First we started a new `h2` heading because we will now look at albedo. But albedo is not a variable which is included in our list of model outputs (see the tree above). However we have both upward and downward radiation, so we could compute albedo. This is accomplished by adding the `derived` tag and specifying the algebraic relationship. When our ILAMB system looks for the albedo variable for a given model and cannot find it, it will try to find the variables which are the arguments of the expression you type in the `derived` tag. It will then combined them automatically and resolve unit differences.
-
-The configuration language is small, but allows you to change a lot of the behavior of the system. Non-algebraic manipulations are also possible, but will be covered in a more advanced tutorial.
-
-#### Configure file variables
+#### Changing configure file variables
 
 This is the list of all the variables you can modify in config file:
 ```
@@ -215,8 +183,6 @@ weight              = 1
 # if a dataset has no weight specified, it is implicitly 1
 
 ```
-
-For user who not familiar with those variables in config files, we suggest you use the default config files provide by ilamb, youcan find [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
 
 ### 3.3. Download a `shapefiles` files locally
 
