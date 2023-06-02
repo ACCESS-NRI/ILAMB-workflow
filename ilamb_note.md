@@ -39,6 +39,7 @@ If you do not have your own files yet, you can download and use [example files](
 The following tree represents the organization of the contents of this extracted sample data (Note: We renamed the main directory name):
 ```
 ILAMB_ROOT (renamed from "ILAMB_sample")
+├── sample.cfg (see Section 3.2)
 ├── DATA
 │   ├── albedo
 │   │   └── CERES
