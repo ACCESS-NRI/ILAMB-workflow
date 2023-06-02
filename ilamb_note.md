@@ -34,6 +34,8 @@ Before you can run `ilamb`, you need to configure a few things:
 
 `ilamb` demands files to be organised in a specific directory structure of `DATA` and `MODELS`.
 
+
+  
 If you do not have your own files yet, you can download and use [example files](https://www.ilamb.org/Downloads/minimal_ILAMB_data.tgz) provided as part of the  of `ilamb`'s [*First Steps* Tutorial](https://www.ilamb.org/doc/first_steps.html)
 
 The following tree represents the organization of the contents of this extracted sample data (Note: We renamed the main directory name):
@@ -208,7 +210,7 @@ export CARTOPY_DATA_DIR=/path/where/you/downloaded/the/shapefiles/at
 ## 4. Run `ilamb`
 
 #### ilamb-run
-Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the command:
+Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the following command at the $ILAMB_ROOT directory:
 ```
 ilamb-run --config sample.cfg --model_root $ILAMB_ROOT/MODELS/ --regions global
 ```
@@ -243,11 +245,11 @@ The next stage is the post-processing. This is done as a separate loop to exploi
 
 #### Viewing the Output
 
-The whole process generates a directory of results which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
+The whole process generates a directory of results within ILAMB_ROOT which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
 ```
 python -m http.server
 ```
-You should see a message similar to this:
+You should see a message similar to this (or use http://0.0.0.0:8000/):
 ```
 Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 ```
