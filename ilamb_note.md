@@ -1,6 +1,13 @@
 # ilamb-tutorial
 
-SB> Check with Rhaegar and possibly add text here to say this tutorial is also useful for ILAMB and IOMB to start with.<SB
+This tutorial explains how you can setup and run International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB) tests on `NCI` infrastracture. Both projects are maintained as `python` code under the package name `ilamb`.
+
+The Tutorial contains:
+1) Background
+2) Installation guide
+3) Setup details
+4) Run `ilamb` on your machine and `NCI`
+6) Fix your setup with `ilamb-doctor`
                                                                                                    
 ## 1) Background: International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB)
 
@@ -209,7 +216,7 @@ export CARTOPY_DATA_DIR=/path/where/you/downloaded/the/shapefiles/at
 
 ## 4. Run `ilamb`
 
-#### ilamb-run
+## 4.1 ilamb-run
 Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the following command at the $ILAMB_ROOT directory:
 ```
 ilamb-run --config sample.cfg --model_root $ILAMB_ROOT/MODELS/ --regions global
@@ -243,7 +250,7 @@ Next we ran all model-confrontation pairs. In our parlance, a confrontation is a
 
 The next stage is the post-processing. This is done as a separate loop to exploit some parallelism. All the work in a model-confrontation pair is purely local to the pair. Yet plotting results on the same scale implies that we know the maxmimum and minimum values from all models and thus requires the communcation of this information. Here, as we are plotting only over the globe and not extra regions, the plotting occurs quickly.
 
-#### Viewing the Output
+## 4.2 Viewing the benchmarking output in your browser
 
 The whole process generates a directory of results within ILAMB_ROOT which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
 ```
@@ -253,57 +260,17 @@ You should see a message similar to this (or use http://0.0.0.0:8000/):
 ```
 Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 ```
-Open this link in your browser and you will see a webpage with a summary table in the center. As we have so few variables and a single model at this point, the table will not be very helpful. As we add more variables and models, this summary table helps you understand relative differences in scores among models. For now, clicking on a row of the table will expand it to reveal the underlying datasets used. Clicking on CERES will take you to another page which presents detailed scores and plots.
+Open this link in your browser and you will see a webpage with a summary table in the center. As we have so few variables and a single model at this point, the table will very simple:
 
-#### ilamb_doctor
-`ilamb_doctor ` is a script you can use to diagnosing some missing model values or what is incorrect or missing from a given analysis. It takes options similar to `ilamb-run` and is used in the following way:
-```[ILAMB/test]$ ilamb-doctor --config test.cfg --model_root ${ILAMB_ROOT}/MODELS/CLM
+<p align="center"><img align="center" width="30%" src="assets/ilamb_output_1.png" alt="Starting side of ilamb output"></p>  
+  
+As we add more variables and models, this summary table helps you understand relative differences in scores among models. For now, clicking on a row of the table will expand it to reveal the underlying datasets used. Clicking on CERES will take you to another page which presents detailed scores and plots.
 
-Searching for model results in /Users/ncf/ILAMB//MODELS/CLM
-
-                                   CLM40n16r228
-                                   CLM45n16r228
-                                   CLM50n18r229
-
-We will now look in each model for the variables in the ILAMB
-configure file you specified (test.cfg). The color green is used to reflect
-which variables were found in the model. The color red is used to
-reflect that a model is missing a required variable.
-
-                           Biomass/GlobalCarbon CLM40n16r228 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM40n16r228 gpp
-                  GrossPrimaryProductivity/GBAF CLM40n16r228 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM40n16r228 nbp
-                      NetEcosystemExchange/GBAF CLM40n16r228 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM40n16r228 tws
-                                   Albedo/MODIS CLM40n16r228 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM40n16r228 tas
-                            Precipitation/GPCP2 CLM40n16r228 pr
-                           Biomass/GlobalCarbon CLM45n16r228 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM45n16r228 gpp
-                  GrossPrimaryProductivity/GBAF CLM45n16r228 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM45n16r228 nbp
-                      NetEcosystemExchange/GBAF CLM45n16r228 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM45n16r228 tws
-                                   Albedo/MODIS CLM45n16r228 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM45n16r228 tas
-                            Precipitation/GPCP2 CLM45n16r228 pr
-                           Biomass/GlobalCarbon CLM50n18r229 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM50n18r229 gpp
-                  GrossPrimaryProductivity/GBAF CLM50n18r229 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM50n18r229 nbp
-                      NetEcosystemExchange/GBAF CLM50n18r229 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM50n18r229 tws
-                                   Albedo/MODIS CLM50n18r229 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM50n18r229 tas
-                            Precipitation/GPCP2 CLM50n18r229 pr
-```
-Here we have run the command on some inputs in our test directory. You will see a list of the confrontations we run and the variables which are required or their synonyms. What is missing in this tutorial is the text coloring which will indicate if a given model has the required variables.
-
-We have finish the introduction of basic `ilamb` usage. We believe you have some understanding of `ilamb` and cont wait to use it. if you still have any question or you want some developer level support, you can find more detail in their [official tutorial](https://www.ilamb.org/doc/tutorial.html). Nest we will start to teach you how to use `ilamb` on NCI in a convenient way.  
+<p align="center"><img align="center" width="50%" src="assets/ilamb_output_2.png" alt="Detailed output of Surface Upward SW Radiation Benchmarking"></p>  
 
 ## 5) Guide for using `ilamb` on NCI
-For people who reach this part, you must have some basic understanding of ilamb and what to start your trip on NCI. so we make a quick guide for you.
+
+If you followed the guides above, you should be familiar with how you can setup 
 
 ### ILAMB_ROOT
 for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it for people to use, the structure is showing below:
@@ -312,44 +279,7 @@ for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it f
 ├── DATA -> /g/data/kj13/datasets/ilamb/DATA
 └── MODELS
     ├── r10i1p1f1
-    ├── r11i1p1f1
-    ├── r12i1p1f1
-    ├── r13i1p1f1
-    ├── r14i1p1f1
-    ├── r15i1p1f1
-    ├── r16i1p1f1
-    ├── r17i1p1f1
-    ├── r18i1p1f1
-    ├── r19i1p1f1
-    ├── r1i1p1f1
-    ├── r20i1p1f1
-    ├── r21i1p1f1
-    ├── r22i1p1f1
-    ├── r23i1p1f1
-    ├── r24i1p1f1
-    ├── r25i1p1f1
-    ├── r26i1p1f1
-    ├── r27i1p1f1
-    ├── r28i1p1f1
-    ├── r29i1p1f1
-    ├── r2i1p1f1
-    ├── r30i1p1f1
-    ├── r31i1p1f1
-    ├── r32i1p1f1
-    ├── r33i1p1f1
-    ├── r34i1p1f1
-    ├── r35i1p1f1
-    ├── r36i1p1f1
-    ├── r37i1p1f1
-    ├── r38i1p1f1
-    ├── r39i1p1f1
-    ├── r3i1p1f1
-    ├── r40i1p1f1
-    ├── r4i1p1f1
-    ├── r5i1p1f1
-    ├── r6i1p1f1
-    ├── r7i1p1f1
-    ├── r8i1p1f1
+    ├── ... (abbreviated)
     └── r9i1p1f1
 ```
 
@@ -358,25 +288,7 @@ for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it f
 .
 └── ACCESS-ESM1-5-R1
     ├── cSoil.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Emon/cSoil/gn/files/d20191115/cSoil_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── cVeg.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/cVeg/gn/files/d20191115/cVeg_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── evspsbl.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/evspsbl/gn/files/d20191115/evspsbl_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── gpp.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/gpp/gn/files/d20191115/gpp_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Omon/hfds/gn/files/d20191115/hfds_Omon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfls.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hfls/gn/files/d20191115/hfls_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfss.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hfss/gn/files/d20191115/hfss_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hurs.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hurs/gn/files/d20191115/hurs_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── lai.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/lai/gn/files/d20191115/lai_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── nbp.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/nbp/gn/files/d20191115/nbp_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── pr.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/pr/gn/files/d20191115/pr_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── ra.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/ra/gn/files/d20191115/ra_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rh.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/rh/gn/files/d20191115/rh_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rlds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rlds/gn/files/d20191115/rlds_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rlus.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rlus/gn/files/d20191115/rlus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rsds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rsds/gn/files/d20191115/rsds_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rsus.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rsus/gn/files/d20191115/rsus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tasmax.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tasmax/gn/files/d20191115/tasmax_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tasmin.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tasmin/gn/files/d20191115/tasmin_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tas.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tas/gn/files/d20191115/tas_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
+    ├── ... (abbreviated)
     └── tsl.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/tsl/gn/files/d20191115/tsl_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-194912.nc
 ```
 
@@ -456,3 +368,51 @@ Load the conda env we build for ilamb.
  
  `ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global`
  this is the main directive to run ilamb.`--config` to specify the config file you use.`model_setup`specify the path to modelroute.txt.`--region`define the region of this ilamb process,youhave some alternative choice [here](https://www.ilamb.org/doc/ilamb_run.html).
+
+# 6. Fix your interactive setup with ilamb_doctor
+
+`ilamb_doctor ` is a script you can use to diagnosing some missing model values or what is incorrect or missing from a given analysis. It takes options similar to `ilamb-run` and is used in the following way:
+```[ILAMB/test]$ ilamb-doctor --config test.cfg --model_root ${ILAMB_ROOT}/MODELS/CLM
+
+Searching for model results in /Users/ncf/ILAMB//MODELS/CLM
+
+                                   CLM40n16r228
+                                   CLM45n16r228
+                                   CLM50n18r229
+
+We will now look in each model for the variables in the ILAMB
+configure file you specified (test.cfg). The color green is used to reflect
+which variables were found in the model. The color red is used to
+reflect that a model is missing a required variable.
+
+                           Biomass/GlobalCarbon CLM40n16r228 biomass or cVeg
+               GrossPrimaryProductivity/Fluxnet CLM40n16r228 gpp
+                  GrossPrimaryProductivity/GBAF CLM40n16r228 gpp
+        GlobalNetEcosystemCarbonBalance/Hoffman CLM40n16r228 nbp
+                      NetEcosystemExchange/GBAF CLM40n16r228 gpp, rh, and ra
+           TerrestrialWaterStorageAnomaly/GRACE CLM40n16r228 tws
+                                   Albedo/MODIS CLM40n16r228 rsus and rsds
+                      SurfaceAirTemperature/CRU CLM40n16r228 tas
+                            Precipitation/GPCP2 CLM40n16r228 pr
+                           Biomass/GlobalCarbon CLM45n16r228 biomass or cVeg
+               GrossPrimaryProductivity/Fluxnet CLM45n16r228 gpp
+                  GrossPrimaryProductivity/GBAF CLM45n16r228 gpp
+        GlobalNetEcosystemCarbonBalance/Hoffman CLM45n16r228 nbp
+                      NetEcosystemExchange/GBAF CLM45n16r228 gpp, rh, and ra
+           TerrestrialWaterStorageAnomaly/GRACE CLM45n16r228 tws
+                                   Albedo/MODIS CLM45n16r228 rsus and rsds
+                      SurfaceAirTemperature/CRU CLM45n16r228 tas
+                            Precipitation/GPCP2 CLM45n16r228 pr
+                           Biomass/GlobalCarbon CLM50n18r229 biomass or cVeg
+               GrossPrimaryProductivity/Fluxnet CLM50n18r229 gpp
+                  GrossPrimaryProductivity/GBAF CLM50n18r229 gpp
+        GlobalNetEcosystemCarbonBalance/Hoffman CLM50n18r229 nbp
+                      NetEcosystemExchange/GBAF CLM50n18r229 gpp, rh, and ra
+           TerrestrialWaterStorageAnomaly/GRACE CLM50n18r229 tws
+                                   Albedo/MODIS CLM50n18r229 rsus and rsds
+                      SurfaceAirTemperature/CRU CLM50n18r229 tas
+                            Precipitation/GPCP2 CLM50n18r229 pr
+```
+Here we have run the command on some inputs in our test directory. You will see a list of the confrontations we run and the variables which are required or their synonyms. What is missing in this tutorial is the text coloring which will indicate if a given model has the required variables.
+
+We have finish the introduction of basic `ilamb` usage. We believe you have some understanding of `ilamb` and cont wait to use it. if you still have any question or you want some developer level support, you can find more detail in their [official tutorial](https://www.ilamb.org/doc/tutorial.html). Nest we will start to teach you how to use `ilamb` on NCI in a convenient way.  
