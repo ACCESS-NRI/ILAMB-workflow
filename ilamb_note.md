@@ -210,24 +210,21 @@ ACCESS_ESM1-5-r3i1p1f1          , MODELS/r3i1p1f1 , CMIP6
 ... (abbreviated)
 ```
 
-### 3.4) Download a `shapefiles` files locally
+### 3.4) Download/link `shapefiles` files locally
 
 You can download the `shapefiles` that are needed to run `ilamb` and `cartopy` offline here:
 
 - For Land: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_land.zip
 - For Ocean: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_ocean.zip
 
-You can put them on whatever path you like, but for our tutorial, we use the parent directory of $ILAMB_ROOT, that is
-```
-├── $ILAMB_ROOT
-├── shapefiles
-│   ├── ne_110m_land.shp
-│   └── ne_110m_ocean.shp
-```
-
 Finally, you need to define that path as `CARTOPY_DATA_DIR` via 
 ```
 export CARTOPY_DATA_DIR=/absolute/path/to/shapefiles/directory
+```
+
+Note: For NCI, we already provide shapefiles in a directory as part of project `xp65`. After joining the project, you can thus easily use
+```
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 ```
 
 ## 4) Run `ilamb`
@@ -310,7 +307,7 @@ mkdir $PWD/ILAMB_ROOT
 You can then simply export their paths after login as:
 ```
 export ILAMB_ROOT=$PWD/ILAMB_ROOT
-export CARTOPY_DATA_DIR=$PWD
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 ```
 
 You can of course change the path of the directory, but will need to take this into account for the PBS job by adding a command to change into the $ILAMB_ROOT directory (see [PBS setup comments](https://github.com/svenbuder/ILAMB-workflow/edit/main/ilamb_note.md#52-portable-batch-system-pbs-jobs-on-nci)).
@@ -377,7 +374,7 @@ The following default PBS file, let's call it `ilamb_test.sh` can help you to se
    
 module load conda/ilamb_dev
 export ILAMB_ROOT=$PWD/ILAMB_ROOT
-export CARTOPY_DATA_DIR=$PWD
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
 ilamb-run --config cmip.cfg --model_setup $PWD/modelroute.txt --regions global
 ```
