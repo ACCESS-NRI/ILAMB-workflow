@@ -229,7 +229,7 @@ export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
 ## 4) Run `ilamb`
 
-## 4.1) ilamb-run
+### 4.1) ilamb-run
 
 Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the following command at the $ILAMB_ROOT directory will run `ilamb` as specified in your `sample.cfg` for all models of the `model_root` and all regions (`global`) of the world:
 ```
@@ -264,7 +264,7 @@ Next we ran all model-confrontation pairs. In our parlance, a confrontation is a
 
 The next stage is the post-processing. This is done as a separate loop to exploit some parallelism. All the work in a model-confrontation pair is purely local to the pair. Yet plotting results on the same scale implies that we know the maxmimum and minimum values from all models and thus requires the communcation of this information. Here, as we are plotting only over the globe and not extra regions, the plotting occurs quickly.
 
-## 4.2) Run specific models and regions
+### 4.2) Run specific models and regions
 
 As mentioned in [Section 3.3](#33-set-up-modelroute-and-regions-files), you can adjust the models and regions that `ilamb` will run on. You can find more information in the `ilamb` [tutorial](https://www.ilamb.org/doc/ilamb_run.html). Calling `ilamb-run` with both specifications, would look like:
 ```
@@ -272,7 +272,7 @@ ilamb-run --config cmip.cfg --model_setup modelroute.txt --regions regions.txt
 ```
 where you call a specific config file (see [Section 3.2](#32-set-up-a-config-file)) as well as specific model routes and regions with files (see [Section 3.3](#33-set-up-modelroute-and-regions-files)).
 
-## 4.3) Viewing the benchmarking output in your browser
+### 4.3) Viewing the benchmarking output in your browser
 
 The whole process generates a directory of results within ILAMB_ROOT which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
 ```
@@ -312,7 +312,7 @@ export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
 You can of course change the path of the directory, but will need to take this into account for the PBS job by adding a command to change into the $ILAMB_ROOT directory (see [PBS setup comments](https://github.com/svenbuder/ILAMB-workflow/edit/main/ilamb_note.md#52-portable-batch-system-pbs-jobs-on-nci)).
 
-### 5.1.1) ILAMB_ROOT/DATA on NCI
+#### ILAMB_ROOT/DATA on NCI
 
 An extensive colletion of DATA is provided in the `kj13` project. You need to have [joined the project on NCI](https://my.nci.org.au/mancini/project-search) to get access to this data.
 
@@ -321,7 +321,7 @@ To create a symbolic link to this data, use the bash command
 ln -s /g/data/kj13/datasets/ilamb/DATA $ILAMB_ROOT/DATA
 ```
 
-### 5.1.2) ILMAB_ROOT/MODEL on NCI
+#### ILMAB_ROOT/MODEL on NCI
 
 In the future, we will provide a symbolic link to a MODEL catalog for you as well.
 
@@ -355,31 +355,32 @@ or shorter
 source = $ILAMB_ROOT/MODELS/r1i1p1f1/Amon/rsus/gn/files/d20191115/rsus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
 ```
 
-## 5.2) Portable Batch System (PBS) jobs on NCI
+### 5.2) Portable Batch System (PBS) jobs on NCI
 
-The following default PBS file, let's call it `ilamb_test.sh` can help you to setup your own:
+The following default PBS file, let's call it `ilamb_test.sh` can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
 ```
 #!/bin/bash
 
 #PBS -N default_ilamb
-#PBS -P iq82
+#PBS -P tm70
 #PBS -q normalbw
 #PBS -l ncpus=1
 #PBS -l mem=32GB           
 #PBS -l jobfs=10GB        
-#PBS -l walltime=10:00:00  
+#PBS -l walltime=00:10:00  
+#PBS -l storage=gdata/xp65+gdata/kj13+gdata/fs38
 #PBS -l wd
-#PBS -l storage=gdata/kj13+gdata/fs38
-#PBS -v MODULEPATH=$MODULEPATH:/g/data/kj13/environments
-   
-module load conda/ilamb_dev
+
+module use /g/data/xp65/public/modules
+module load conda/access-med-0.1
+
 export ILAMB_ROOT=$PWD/ILAMB_ROOT
 export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
 ilamb-run --config cmip.cfg --model_setup $PWD/modelroute.txt --regions global
 ```
 
-If you are not familiar with PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs). In brief: this PBS script (which you can submit via the bash command `qsub ilamb_test.sh`), will submit a job to Gadi with the job name (#PBS -N) *default_ilamb* under project (#PBS -P) `iq82` with a normal queue (#PBS -q normalbw), for 1 CPU (#PBS -l ncpus=1) with 32 GB RAM (#PBS -l mem=32GB), with an walltime of 10 hours and access to 10 GB local disk space (#PBS -l jobfs=10GB) as well as data storage access to projects `kj13` and `fs38` (again, note that you have to be [member of both projects on NCI](https://my.nci.org.au/mancini/project-search). Upon starting the job, it will define a MODULEPATH as part of the environment variables and change into to the working directory that you started the job from (#PBS -l wd), it will load the `ilamb_dev` module (from the MODULEPATH) and export the $ILAMB_ROOT as well as $ARTOPY_DATA_DIR paths before running `ilamb-run`.
+If you are not familiar with PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs). In brief: this PBS script (which you can submit via the bash command `qsub ilamb_test.sh`), will submit a job to Gadi with the job name (#PBS -N) *default_ilamb* under project (#PBS -P) `tm70` with a normal queue (#PBS -q normalbw), for 1 CPU (#PBS -l ncpus=1) with 32 GB RAM (#PBS -l mem=32GB), with an walltime of 10 hours and access to 10 GB local disk space (#PBS -l jobfs=10GB) as well as data storage access to projects `xp65`, `kj13`, and `fs38` (again, note that you have to be [member of both projects on NCI](https://my.nci.org.au/mancini/project-search). Upon starting the job, it will change into to the working directory that you started the job from (#PBS -l wd) and load the access-med conda environment. Finally, it will export the $ILAMB_ROOT as well as $ARTOPY_DATA_DIR paths and start an `ilamb-run`.
 
 In our example, we actually run the `cmip.cfg` file from the `ilamb` [config file github repository](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/) for files spec
 
@@ -391,7 +392,7 @@ export CARTOPY_DATA_DIR=/absolute/path/where/shapefiles/actually/are
 
 Once the jobs are finished, you can again inspect the outcome as described in [Section 4.3](#43-viewing-the-benchmarking-output-in-your-browser)
 
-# 6. Fix your setup with ilamb_doctor
+## 6. Fix your setup with ilamb_doctor
 
 `ilamb_doctor ` is a script you can use to diagnosing some missing model values or what is incorrect or missing from a given analysis. It takes options similar to `ilamb-run` and is used in the following way:
 ```[ILAMB/test]$ ilamb-doctor --config test.cfg --model_root ${ILAMB_ROOT}/MODELS/CLM
