@@ -268,14 +268,76 @@ As we add more variables and models, this summary table helps you understand rel
 
 <p align="center"><img align="center" width="50%" src="assets/ilamb_output_2.png" alt="Detailed output of Surface Upward SW Radiation Benchmarking"></p>  
 
-## 5) Guide for using `ilamb` on NCI
+## 5. Run `ilamb` on NCI
 
-If you followed the guides above, you should be familiar with how you can setup 
+If you followed the guides above, you should be familiar with how you can setup `ilamb`.
 
-### ILAMB_ROOT
-for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it for people to use, the structure is showing below:
+To run `ilamb` on NCI, you can either setup a non-interactive Portable Batch System (PBS) job [Section 5.1](#51-portable-batch-system-pbs-jobs-on-NCI) or start an interactive setup [Section 5.2](#52-interactive-setup-on-nci).
+
+## 5.1. Portable Batch System (PBS) jobs on NCI
+
+The following default file should help you to run a PBS job on Gadi@NCI under project `iq82` (PBS -P) with access to storage of projects `kj13` and `fs38` (PBS -l storage).
+
 ```
-.
+#!/bin/bash
+
+#PBS -N default_ilamb
+#PBS -l wd
+#PBS -P iq82
+#PBS -q normalbw
+#PBS -l walltime=10:00:00  
+#PBS -l ncpus=1
+#PBS -l mem=32GB           
+#PBS -l jobfs=10GB        
+#PBS -l storage=gdata/kj13+gdata/fs38
+#PBS -v MODULEPATH=$MODULEPATH:/g/data/kj13/environments
+   
+module load conda/ilamb_dev
+export ILAMB_ROOT=$PWD/ILAMB_ROOT
+export CARTOPY_DATA_DIR=$PWD
+
+ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global
+```
+
+If you are not familiar with PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs)
+
+>>> CONTINUE HERE <<<
+
+
+
+We provide some example of PBS jobs script:
+
+We will not explain all the PBS Directives here, just pick up something we think is necessary.
+
+`#PBS -q express` for people who want to run the process in a queue which can connect to internet, you can change this into `#PBS -q copyq`. But we recommand you to run in a local env cause we have download everything you need in local.
+
+`#PBS -l storage=gdata/kj13+gdata/fs38`
+Because `ACCESS_ESM1-5` model result was store in group fs38 and all the `ilamb` data and file are store in group kj13. you may need the authority to access both of this two groups first.
+
+`module load conda/ilamb_dev`
+Load the conda env we build for ilamb.
+
+`export ILAMB_ROOT=$PWD/ILAMB_ROOT`Define the env variable to `ILAMB_ROOT`.
+
+`CARTOPY_DATA_DIR=$PWD`Define the env variable to `CARTOPY_DATA_DIR`
+ 
+ `ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global`
+ this is the main directive to run ilamb.`--config` to specify the config file you use.`model_setup`specify the path to modelroute.txt.`--region`define the region of this ilamb process,youhave some alternative choice [here](https://www.ilamb.org/doc/ilamb_run.html).
+
+
+## 5.2. Interactive setup on NCI
+
+
+For NCI, the DATA and MODELS are distributed across the projects `kj13` and `fs38`, and you will therefore need to load the storage
+
+## 5.1. Define you ILAMB_ROOT on NCI
+
+
+
+
+
+```
+$ILAMB_ROOT
 ├── DATA -> /g/data/kj13/datasets/ilamb/DATA
 └── MODELS
     ├── r10i1p1f1
@@ -283,9 +345,12 @@ for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it f
     └── r9i1p1f1
 ```
 
+for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it for people to use, the structure is showing below:
+
+
 `DATA` directory point to the observational dataset, and `MODELS` directory contains all the experiment in `ACCESS_ESM1-5` historical data. for each experiment directory, the structure is:
 ```
-.
+$ILAMB_ROOT/DATA
 └── ACCESS-ESM1-5-R1
     ├── cSoil.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Emon/cSoil/gn/files/d20191115/cSoil_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
     ├── ... (abbreviated)
@@ -332,26 +397,7 @@ ACCESS_ESM1-5-r3i1p1f1          , MODELS/r3i1p1f1/ACCESS_ESM1-5-R1     , CMIP6
 If you not familiar with the PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs)
 
 We provide some example of PBS jobs script:
-```
-#!/bin/bash
 
-#PBS -N test
-#PBS -l wd
-#PBS -P iq82
-#PBS -q express
-#PBS -l walltime=10:00:00  
-#PBS -l ncpus=1
-#PBS -l mem=32GB           
-#PBS -l jobfs=10GB        
-#PBS -l storage=gdata/kj13+gdata/fs38
-#PBS -v MODULEPATH=$MODULEPATH:/g/data/kj13/environments
-   
-module load conda/ilamb_dev
-export ILAMB_ROOT=$PWD/ILAMB_ROOT
-export CARTOPY_DATA_DIR=$PWD
-
-ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global
-```
 We will not explain all the PBS Directives here, just pick up something we think is necessary.
 
 `#PBS -q express` for people who want to run the process in a queue which can connect to internet, you can change this into `#PBS -q copyq`. But we recommand you to run in a local env cause we have download everything you need in local.
