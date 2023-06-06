@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#PBS -N test
+#PBS -l wd
+#PBS -P iq82
+#PBS -q express
+#PBS -l walltime=0:10:00  
+#PBS -l ncpus=1
+#PBS -l mem=32GB           
+#PBS -l jobfs=10GB        
+#PBS -l storage=gdata/kj13+gdata/fs38+gdata/xp65
+#PBS -v MODULEPATH=$MODULEPATH:/g/data/xp65/environments
+
+module load conda/ilamb_dev
+
+python softlink_builder.py --local_path /g/data/kj13/users/yz9299/ilamb_test/ILAMB_ROOT/MODELS/container
