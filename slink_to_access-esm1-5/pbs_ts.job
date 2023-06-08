@@ -8,11 +8,13 @@
 #PBS -l ncpus=1
 #PBS -l mem=32GB           
 #PBS -l jobfs=10GB        
-#PBS -l storage=gdata/kj13+gdata/fs38+gdata/xp65
-#PBS -v MODULEPATH=$MODULEPATH:/g/data/xp65/environments
+#PBS -l storage=gdata/fs38
 
-export $LOCAL-PATH=
+export $MODULE_PATH=YOUR_MODULE_PATH
+export $MODULE=YOUR_MODULE
+export $LOCAL_PATH=YOUR_LOCAL_PATH
 
-module load conda/ilamb_dev
+module use $MODULE_PATH
+module load $MODULE
 
-python softlink_builder.py --local_path $LOCAL-PATH
+python softlink_builder.py --local_path $LOCAL_PATH
