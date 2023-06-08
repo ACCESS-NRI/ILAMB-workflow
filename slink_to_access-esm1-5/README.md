@@ -4,7 +4,7 @@ This is a brief readme to explain how to use the script to build softlink:
 
 2. Before you run this script, make sure you have the pass to GROUP fs38.
 
-3. When you start to use it, there are three environment variables you need to define in pbs.job file:
+3. When you start to use it, there are three environment variables you need to define in pbs_ts.job file:
 ```
   $MODULE_PATH=YOUR_MODULE_PATH
   $MODULE=YOUR_MODULE
