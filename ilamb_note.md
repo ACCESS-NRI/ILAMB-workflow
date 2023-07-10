@@ -1,31 +1,58 @@
-# ilamb-tutorial
+# ACCESS-NRI Tutorial for using `ilamb` on NCI
 
-## Background
+This tutorial explains how you can setup and run International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB) tests on `NCI` infrastracture. Both projects are maintained as `python` code under the package name `ilamb`.
+
+The Tutorial contains:
+1) [Background](#1-background-international-land-model-benchmarking-ilamb-and-international-ocean-model-benchmarking-iomb)
+2) [Installation guide](#2-installing-ilamb)
+3) [Setup details](#3-configuring-ilamb)
+4) [Run `ilamb`](#4-run-ilamb)
+5) [Run `liamb` on `NCI`](#5-run-ilamb-on-nci)
+6) [Fix your setup with `ilamb-doctor`](#6-fix-your-interactive-setup-with-ilamb_doctor)
+                                                                                                   
+## 1) Background: International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB)
 
 As earth system models (ESMs) become increasingly complex, there is a growing need for comprehensive and multi-faceted evaluation of model projections. The International Land Model Benchmarking (ILAMB) project is a model-data intercomparison and integration project designed to improve the performance of land models and, in parallel, improve the design of new measurement campaigns to reduce uncertainties associated with key land surface processes.
 
-For people who do not use ilamb before, we suggest you read from the beginning, if you know the basic principle of ilamb and used ilamb before, you can start from [Guild for using on NCI](#guild-for-use-on-nci) 
+If you have used (and installed) `ilamb` on NCI and know the basic principle of `ilamb`, you can start from [Section 5) Guide for using ilamb on NCI](#5-guide-for-use-on-nci).
 
-## Installation
+## 2) Installing `ilamb`
 
-For installation, the ilamb official tutorial provide a very detailed document, you can find it [here](https://www.ilamb.org/doc/install.html). For NCI users, we have build a conda environment with ilamb installed, which you can use directly(About how to load the environment, we will explain it in detail in next few part).
-
-## run the ilamb
-To run the ilamb, there is three things you may need to do first: 
-
-1.get your `ILAMB_ROOT` will organised.
-
-2.wright your own `config` file.
-
-3.and the last thing is optional but we recommand that you get the `shapefiles` of natural earth locally cause when you run the `ilamb`, it will call the cartopy package to draw some picture, and if you need to run `ilamb` in a internet-free environment, you will meet some error, so we recommand you to download it first.  
-
-
-### ILAMB_ROOT dir
-
-ilamb comes with no data, so to use this tool to do model-confrontation, you will need to set the observations and modeleresults. `ILAMB_ROOT` is the path to the observations and modelresults, The following tree represents the organization of an example contents of data:
+For NCI users, ACCESS-NRI is providing a `conda` environment called `ilamb_dev` through the `xp65` project, with ilamb installed. You can load and activate it via:
 
 ```
-ILAMB_ROOT
+>>> module use /g/data/xp65/public/modules
+>>> module load conda/ilamb_dev
+>>> conda activate ilamb_dev
+```
+
+We will soon add `ilamb` also to the ACCESS-NRI MED `conda` environment, `access-med` under project`xp65`.
+
+If you want to install `ilamb` yourself, please follow the official installation instructions at [https://www.ilamb.org/doc/install.html](https://www.ilamb.org/doc/install.html).
+
+## 3) Configuring `ilamb`
+
+Before you can run `ilamb`, you need to configure a few things:
+
+3.1. [Organise the ILAMB_ROOT path](#31-organise-the-ilamb_root-path)  
+3.2. [Set up a `config` file](#32-set-up-a-config-file)  
+3.3. [Set up a `modelroute` and `regions` files](#33-set-up-modelroute-and-regions-files) (Optional, if you want to run only a subset of models and/or specific regions of the world)
+3.4. [Download a `shapefiles` files locally](#33-download-a-shapefiles-files-locally) (Optional online, necessary offline e.g. on NCI compute nodes)
+
+### 3.1) Organise the ILAMB_ROOT path
+
+`ilamb` demands files to be organised in a specific directory structure of `DATA` and `MODELS`.
+
+
+  
+If you do not have your own files yet, you can download and use [example files](https://www.ilamb.org/Downloads/minimal_ILAMB_data.tgz) provided as part of the  of `ilamb`'s [*First Steps* Tutorial](https://www.ilamb.org/doc/first_steps.html)
+
+The following tree represents the organization of the contents of this extracted sample data (Note: We renamed the main directory name):
+```
+$ILAMB_ROOT (renamed from "ILAMB_sample")
+├── sample.cfg (see [Section 3.2](#32-set-up-a-config-file))
+├── modelroute.txt (optional, see [Section 3.3](#33-set-up-modelroute-and-regions-files))
+├── regions.txt (optional, see [Section 3.3](#33-set-up-modelroute-and-regions-files))
 ├── DATA
 │   ├── albedo
 │   │   └── CERES
@@ -43,10 +70,16 @@ ILAMB_ROOT
 
 There are two main branches in this directory. The first is the `DATA` directory–this is where we keep the observational datasets each in a subdirectory bearing the name of the variable. While not strictly necesary to follow this form, it is a convenient convention. The second branch is the `MODEL` directory in which we see a single model result from CLM.
 
-#### DATA
+#### 3.1.1) Add files to DATA
 
-Although you can organised your own data follow the way above, or you can add some datasets follow [this way](https://www.ilamb.org/doc/add_data.html), `ilamb` has a method `ilamb_fetch` to help user get the observitional dataset. From a commandline prompt, run `ilamb-fetch`. You should see output similar to the following:
+There is a lot of DATA available to add. Take a look at https://www.ilamb.org/ILAMB-Data/ and https://www.ilamb.org/IOMB-Data/ for extensive lists for ILAMB-Data (land modelling) and IOMB-Data (ocean modelling).
 
+`ilamb` has a commandline prompt to add new DATA in a substructure. To fetch all available DATA from the website, you can simply go to your $ILAMB_ROOT and type
+```
+>>> ilamb-fetch
+```
+
+The command will compare the above website with your current DATA and make suggestions for downloads:
 ```
 Comparing remote location:
 
@@ -60,33 +93,37 @@ I found the following files which are missing, out of date, or corrupt:
 
       .//DATA/twsa/GRACE/twsa_0.5x0.5.nc
       .//DATA/rlus/CERES/rlus_0.5x0.5.nc
-      ...
+      ... (we have abbreviated the extensive list here)
 
 Download replacements? [y/n]
 ```
 
-This tool looks at a remote location (by default the location of the land datasets) and compares it to a local location (by defult ILAMB_ROOT or ./). It detects for the presence and version of the data on your local machine and populates a list for download. The tool will then prompt you to rerun to check for file validity.
-
-This tool can be used to download other data collections as well. If you need the ocean IOMB data, then you can change the remote location by running:
+You can use `ilamb-fetch -h` to see how you can adjust the remote and local locations. If you want to download IOMB-Data, you can for example use
 ```
 ilamb-fetch --remote_root https://www.ilamb.org/IOMB-Data/
 ```
 
 
-#### MODEL
+#### 3.1.2) Add files to MODEL
+  
+If you want to add your own `MODEL` to `ilamb`, you can do so by following [this description](https://www.ilamb.org/doc/add_model.html).
+  
+For `NCI` users, our `ilamb_dev` `conda` enrivonment already provides all observational datasets from the `ilamb` official web and the [ACCESS-ESM1_5](https://access-hive.org.au/configurations/access-esm/) model result for user at `ILAMB_ROOT`. Stay tune for more observational and model data or tell us which ones we should definitely add.
 
-This part is about the `model-results` you want to comfront with the observitions or with other models. Typically you can build your own `MODEL` follow the example above or follow [this way](https://www.ilamb.org/doc/add_model.html) as well. For `NCI` users we have provide the `ILAMB_ROOT` with all the observational datasets on the `ilamb` official web and the `ACCESS-ESM1_5` model result for user to comfront, maybe in the future we will provide more observational datasets and model-results datatsets.
+### 3.2) Set up a `config` file
 
-### Configure file
+Now that we have the data, we need to setup a `config` file which the `ilamb` package will use to initiate a benchmark study.  
 
-Now that we have data, we need to setup a file which the ILAMB package will use to initiate a benchmark study. we use a simple example from the ilamb toturial to explain the basical usage of the `config file`, and we will explain each variable which you can modify in detail in the `config file`
+`ilamb` provides default config files [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
 
-There is such a file which comes with the software package in the demo directory called `sample.cfg`. Navigate to the demo directory and open this file or view it [online](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/sample.cfg). We also reproduce it here for the purpose of this tutorial:
+Below we explain both which variables you can define, but start by showing you the minimum setup from the [tutorial's](https://www.ilamb.org/doc/first_steps.html). `sample.cfg` [file](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/sample.cfg):
+
+#### Minimum configure file with a direct and a derived variable
+
 ```
 # This configure file specifies the variables
 
 [h1: Radiation and Energy Cycle]
-bgcolor  = "#FFECE6"
 
 [h2: Surface Upward SW Radiation]
 variable = "rsus"
@@ -102,45 +139,9 @@ derived  = "rsus/rsds"
 source   = "DATA/albedo/CERES/albedo_0.5x0.5.nc"
 ```
 
-We note that while the ILAMB package is written in python, this file contains no python and is written in a small configure language of our invention. Here we will go over this file line by line and explain how each entry functions.
+In brief: This file allows you to create different header descriptions of the experiments (`h1`: top level for grouping of variables, `h2`: sub-level for each variable), but most importantly the `variable`s that we will look into and their `source`. In the eaxmple, `rsus` (*Surface Upward Shortwave Radiation*) and `albedo` are the used variables. The latter is actually derived from two variables by dividing the *Surface Upward Shortwave Radiation* by the *Surface Downward Shortwave Radiation*, `derived = rsus/rsds`. Finally, sources are defined as `source` with a text-font header without `h1` or `h2`.
 
-At the top of the file, you see the following lines:
-```
-[h1: Radiation and Energy Cycle]
-bgcolor = "#FFECE6"
-```
-This is a tag that we use to tell the system that we will have a top level heading `h1` which we call *Radiation and Energy Cycle*. While you can name this section anything of your choosing, we have chosen this name as it is descriptive of the benchmarking activities we will perform. Also note that you may specify a background color here in hexadecimal format (we found this site to be helpful to play around with [colors](https://www.webfx.com/web-design/color-picker/ffece6/)). This color will be used in the output which we will show later. It is important to understand that heading are hierarchical–this heading owns everything underneath it until the next `h1` tag is found or the file ends. We use `h1` level headings to group variables of a given type to better organize the output.
-
-Below this, you will notice a second level heading which appears like this:
-```
-[h2: Surface Upward SW Radiation]
-variable = "rsus"
-```
-We will be looking at radiation here. The variable tag is the name of the `variable` inside the dataset which represents the variable of interest. Here `rsus` is a standard name used to represent *Surface Upward Shortwave Radiation*. We use h2 headings to represent a variable which we wish to compare.
-
-The next entry in the file appears as the following:
-```
-[CERES]
-source   = "DATA/rsus/CERES/rsus_0.5x0.5.nc"
-```
-First, notice the absence of a `h1` or `h2` tag. This indicates that this entry is a particular dataset of a given variable (our `h2`heading) of a given grouping (our `h1` heading). We have named it CERES as that is the name of the data source we have included. We only have to specify the location of the source dataset, relative to the environment variable we set earlier, `ILAMB_ROOT`.
-
-At this point we feel it important to mention that this is the minimum required to setup a benchmark study in this system. If you have an observational dataset which directly maps to a variable which is output by models as `rsus` is, you are done.
-
-However, it is possible that your dataset has no direct analog in the list of variables which models output and some manipulation is needed. We have support for when your dataset corresponds to an algebraic function of model variables. Consider the remaining entries in our sample:
-```
-[h2: Albedo]
-variable = "albedo"
-derived  = "rsus/rsds"
-
-[CERES]
-source   = "DATA/albedo/CERES/albedo_0.5x0.5.nc"
-```
-We have done two things here. First we started a new `h2` heading because we will now look at albedo. But albedo is not a variable which is included in our list of model outputs (see the tree above). However we have both upward and downward radiation, so we could compute albedo. This is accomplished by adding the `derived` tag and specifying the algebraic relationship. When our ILAMB system looks for the albedo variable for a given model and cannot find it, it will try to find the variables which are the arguments of the expression you type in the `derived` tag. It will then combined them automatically and resolve unit differences.
-
-The configuration language is small, but allows you to change a lot of the behavior of the system. Non-algebraic manipulations are also possible, but will be covered in a more advanced tutorial.
-
-#### Configure file variables
+#### Changing configure file variables
 
 This is the list of all the variables you can modify in config file:
 ```
@@ -197,10 +198,40 @@ weight              = 1
 
 ```
 
-For user who not familiar with those variables in config files, we suggest you use the default config files provide by ilamb, youcan find [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
+### 3.3) Set up `modelroute` and `regions` files
 
-#### ilamb-run
-Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the command:
+If you plan to run only a specific subset of models, you can already define them in a `modelroute.txt` file. It could look like our specific example for running different versions (1, 2, and 3) of the ACCESS-ESM 1.5 suite:
+
+```
+# Model Name                    , PATH/TO/MODELS  , EXTRA COMMANDS
+ACCESS_ESM1-5-r1i1p1f1          , MODELS/r1i1p1f1 , CMIP6
+ACCESS_ESM1-5-r2i1p1f1          , MODELS/r2i1p1f1 , CMIP6
+ACCESS_ESM1-5-r3i1p1f1          , MODELS/r3i1p1f1 , CMIP6
+... (abbreviated)
+```
+
+### 3.4) Download/link `shapefiles` files locally
+
+You can download the `shapefiles` that are needed to run `ilamb` and `cartopy` offline here:
+
+- For Land: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_land.zip
+- For Ocean: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_ocean.zip
+
+Finally, you need to define that path as `CARTOPY_DATA_DIR` via 
+```
+export CARTOPY_DATA_DIR=/absolute/path/to/shapefiles/directory
+```
+
+Note: For NCI, we already provide shapefiles in a directory as part of project `xp65`. After joining the project, you can thus easily use
+```
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
+```
+
+## 4) Run `ilamb`
+
+### 4.1) ilamb-run
+
+Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the following command at the $ILAMB_ROOT directory will run `ilamb` as specified in your `sample.cfg` for all models of the `model_root` and all regions (`global`) of the world:
 ```
 ilamb-run --config sample.cfg --model_root $ILAMB_ROOT/MODELS/ --regions global
 ```
@@ -233,19 +264,136 @@ Next we ran all model-confrontation pairs. In our parlance, a confrontation is a
 
 The next stage is the post-processing. This is done as a separate loop to exploit some parallelism. All the work in a model-confrontation pair is purely local to the pair. Yet plotting results on the same scale implies that we know the maxmimum and minimum values from all models and thus requires the communcation of this information. Here, as we are plotting only over the globe and not extra regions, the plotting occurs quickly.
 
-#### Viewing the Output
+### 4.2) Run specific models and regions
 
-The whole process generates a directory of results which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
+As mentioned in [Section 3.3](#33-set-up-modelroute-and-regions-files), you can adjust the models and regions that `ilamb` will run on. You can find more information in the `ilamb` [tutorial](https://www.ilamb.org/doc/ilamb_run.html). Calling `ilamb-run` with both specifications, would look like:
+```
+ilamb-run --config cmip.cfg --model_setup modelroute.txt --regions regions.txt
+```
+where you call a specific config file (see [Section 3.2](#32-set-up-a-config-file)) as well as specific model routes and regions with files (see [Section 3.3](#33-set-up-modelroute-and-regions-files)).
+
+### 4.3) Viewing the benchmarking output in your browser
+
+The whole process generates a directory of results within ILAMB_ROOT which by default is called `_build`. To view the results locally on your computer, navigate into this directory and start a local `http` server:
 ```
 python -m http.server
 ```
-You should see a message similar to this:
+You should see a message similar to this (or use http://0.0.0.0:8000/):
 ```
 Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 ```
-Open this link in your browser and you will see a webpage with a summary table in the center. As we have so few variables and a single model at this point, the table will not be very helpful. As we add more variables and models, this summary table helps you understand relative differences in scores among models. For now, clicking on a row of the table will expand it to reveal the underlying datasets used. Clicking on CERES will take you to another page which presents detailed scores and plots.
+Open this link in your browser and you will see a webpage with a summary table in the center. As we have so few variables and a single model at this point, the table will very simple:
 
-#### ilamb_doctor
+<p align="center"><img align="center" width="30%" src="assets/ilamb_output_1.png" alt="Starting side of ilamb output"></p>  
+  
+As we add more variables and models, this summary table helps you understand relative differences in scores among models. For now, clicking on a row of the table will expand it to reveal the underlying datasets used. Clicking on CERES will take you to another page which presents detailed scores and plots.
+
+<p align="center"><img align="center" width="50%" src="assets/ilamb_output_2.png" alt="Detailed output of Surface Upward SW Radiation Benchmarking"></p>  
+
+## 5) Run `ilamb` on NCI
+
+If you followed the guides above, you should be familiar with how you can setup `ilamb`.
+
+To run `ilamb` on NCI, you can either start an interactive setup [Section 5.1](#51-interactive-setup-on-nci) or use a non-interactive Portable Batch System (PBS) job [Section 5.2](#52-portable-batch-system-pbs-jobs-on-NCI).
+
+In both cases, you need to again define the variable `$ILAMB_ROOT`
+
+### 5.1) ILAMB_ROOT and DATA/MODEL on NCI
+
+In our default setup, we will place ILAMB_ROOT and the shapefiles for cartopy directly in the home directory. First, you have to create the ILAMB_ROOT directory
+```
+mkdir $PWD/ILAMB_ROOT
+```
+You can then simply export their paths after login as:
+```
+export ILAMB_ROOT=$PWD/ILAMB_ROOT
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
+```
+
+You can of course change the path of the directory, but will need to take this into account for the PBS job by adding a command to change into the $ILAMB_ROOT directory (see [PBS setup comments](https://github.com/svenbuder/ILAMB-workflow/edit/main/ilamb_note.md#52-portable-batch-system-pbs-jobs-on-nci)).
+
+#### ILAMB_ROOT/DATA on NCI
+
+An extensive colletion of DATA is provided in the `kj13` project. You need to have [joined the project on NCI](https://my.nci.org.au/mancini/project-search) to get access to this data.
+
+To create a symbolic link to this data, use the bash command
+```
+ln -s /g/data/kj13/datasets/ilamb/DATA $ILAMB_ROOT/DATA
+```
+
+#### ILMAB_ROOT/MODEL on NCI
+
+In the future, we will provide a symbolic link to a MODEL catalog for you as well.
+
+For now, you will need to create the directory $ILAMB_ROOT/MODEL and populate it with symbolic links to specific models yourself.
+
+In our example, we will use ACCESS-ESM1.5, which is provided on NCI as part of project `fs38`.  You need to have [joined the project on NCI](https://my.nci.org.au/mancini/project-search) to get access to this data.
+
+To link the ACCESS-ESM1.5 suite files to your $ILAMB_ROOT/MODEL, simply execute the following bash command
+```
+mkdir $ILAMB_ROOT/MODELS
+ln -s /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r* $ILAMB_ROOT/MODELS
+```
+
+By the end of Section 5.1.1 and 5.1.2, your $ILAMB_ROOT Directory should look similar to
+```
+$ILAMB_ROOT
+├── ...
+├── DATA -> /g/data/kj13/datasets/ilamb/DATA
+└── MODELS
+    ├── r10i1p1f1 -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r10i1p1f1
+    ├── ... (abbreviated)
+    └── r9i1p1f1 -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r9i1p1f1
+```
+
+These different models have a lot of subdirectories, which are important to keep in mind when defining the `source` parameter in your `ilamb` `.cfg` file. Note that the `ilamb` files will end with `*.nc*. For example, one of the *rsus* files for run `r10i1p1f1` can be found (and used for `.cfg` under
+```
+source = /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rsus/gn/files/d20191115/rsus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
+```
+or shorter 
+```
+source = $ILAMB_ROOT/MODELS/r1i1p1f1/Amon/rsus/gn/files/d20191115/rsus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
+```
+
+### 5.2) Portable Batch System (PBS) jobs on NCI
+
+The following default PBS file, let's call it `ilamb_test.sh` can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
+```
+#!/bin/bash
+
+#PBS -N default_ilamb
+#PBS -P tm70
+#PBS -q normalbw
+#PBS -l ncpus=1
+#PBS -l mem=32GB           
+#PBS -l jobfs=10GB        
+#PBS -l walltime=00:10:00  
+#PBS -l storage=gdata/xp65+gdata/kj13+gdata/fs38
+#PBS -l wd
+
+module use /g/data/xp65/public/modules
+module load conda/access-med-0.1
+
+export ILAMB_ROOT=$PWD/ILAMB_ROOT
+export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
+
+ilamb-run --config cmip.cfg --model_setup $PWD/modelroute.txt --regions global
+```
+
+If you are not familiar with PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs). In brief: this PBS script (which you can submit via the bash command `qsub ilamb_test.sh`), will submit a job to Gadi with the job name (#PBS -N) *default_ilamb* under project (#PBS -P) `tm70` with a normal queue (#PBS -q normalbw), for 1 CPU (#PBS -l ncpus=1) with 32 GB RAM (#PBS -l mem=32GB), with an walltime of 10 hours and access to 10 GB local disk space (#PBS -l jobfs=10GB) as well as data storage access to projects `xp65`, `kj13`, and `fs38` (again, note that you have to be [member of both projects on NCI](https://my.nci.org.au/mancini/project-search). Upon starting the job, it will change into to the working directory that you started the job from (#PBS -l wd) and load the access-med conda environment. Finally, it will export the $ILAMB_ROOT as well as $ARTOPY_DATA_DIR paths and start an `ilamb-run`.
+
+In our example, we actually run the `cmip.cfg` file from the `ilamb` [config file github repository](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/) for files spec
+
+Note: If your ILAMB_ROOT and CARTOPY_DATA_DIR are not in your directory from where you submitted the job from, then you need to adjust the export commands to their path
+```
+export ILAMB_ROOT=/absolute/path/where/ILAMB_ROOT/actually/is
+export CARTOPY_DATA_DIR=/absolute/path/where/shapefiles/actually/are
+```
+
+Once the jobs are finished, you can again inspect the outcome as described in [Section 4.3](#43-viewing-the-benchmarking-output-in-your-browser)
+
+## 6. Fix your setup with ilamb_doctor
+
 `ilamb_doctor ` is a script you can use to diagnosing some missing model values or what is incorrect or missing from a given analysis. It takes options similar to `ilamb-run` and is used in the following way:
 ```[ILAMB/test]$ ilamb-doctor --config test.cfg --model_root ${ILAMB_ROOT}/MODELS/CLM
 
@@ -261,188 +409,9 @@ which variables were found in the model. The color red is used to
 reflect that a model is missing a required variable.
 
                            Biomass/GlobalCarbon CLM40n16r228 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM40n16r228 gpp
-                  GrossPrimaryProductivity/GBAF CLM40n16r228 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM40n16r228 nbp
-                      NetEcosystemExchange/GBAF CLM40n16r228 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM40n16r228 tws
-                                   Albedo/MODIS CLM40n16r228 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM40n16r228 tas
-                            Precipitation/GPCP2 CLM40n16r228 pr
-                           Biomass/GlobalCarbon CLM45n16r228 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM45n16r228 gpp
-                  GrossPrimaryProductivity/GBAF CLM45n16r228 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM45n16r228 nbp
-                      NetEcosystemExchange/GBAF CLM45n16r228 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM45n16r228 tws
-                                   Albedo/MODIS CLM45n16r228 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM45n16r228 tas
-                            Precipitation/GPCP2 CLM45n16r228 pr
-                           Biomass/GlobalCarbon CLM50n18r229 biomass or cVeg
-               GrossPrimaryProductivity/Fluxnet CLM50n18r229 gpp
-                  GrossPrimaryProductivity/GBAF CLM50n18r229 gpp
-        GlobalNetEcosystemCarbonBalance/Hoffman CLM50n18r229 nbp
-                      NetEcosystemExchange/GBAF CLM50n18r229 gpp, rh, and ra
-           TerrestrialWaterStorageAnomaly/GRACE CLM50n18r229 tws
-                                   Albedo/MODIS CLM50n18r229 rsus and rsds
-                      SurfaceAirTemperature/CRU CLM50n18r229 tas
+                                        ... (abbreviated)
                             Precipitation/GPCP2 CLM50n18r229 pr
 ```
 Here we have run the command on some inputs in our test directory. You will see a list of the confrontations we run and the variables which are required or their synonyms. What is missing in this tutorial is the text coloring which will indicate if a given model has the required variables.
 
-We have finish the introduction of basic `ilamb` usage. We believe you have some understanding of `ilamb` and cont wait to use it. if you still have any question or you want some developer level support, you can find more detail in their [official tutorial](https://www.ilamb.org/doc/tutorial.html). Nest we will start to teach you how to use `ilamb` on NCI in a convenient way.  
-
-## Guild for use on NCI
-For people who reach this part, you must have some basic understanding of ilamb and what to start your trip on NCI. so we make a "brief" guild for you.
-
-### ILAMB_ROOT
-for obervational data and model result of `ACCESS_ESM1-5`, we have prebuild it for people to use, the structure is showing below:
-```
-.
-├── DATA -> /g/data/kj13/datasets/ilamb/DATA
-└── MODELS
-    ├── r10i1p1f1
-    ├── r11i1p1f1
-    ├── r12i1p1f1
-    ├── r13i1p1f1
-    ├── r14i1p1f1
-    ├── r15i1p1f1
-    ├── r16i1p1f1
-    ├── r17i1p1f1
-    ├── r18i1p1f1
-    ├── r19i1p1f1
-    ├── r1i1p1f1
-    ├── r20i1p1f1
-    ├── r21i1p1f1
-    ├── r22i1p1f1
-    ├── r23i1p1f1
-    ├── r24i1p1f1
-    ├── r25i1p1f1
-    ├── r26i1p1f1
-    ├── r27i1p1f1
-    ├── r28i1p1f1
-    ├── r29i1p1f1
-    ├── r2i1p1f1
-    ├── r30i1p1f1
-    ├── r31i1p1f1
-    ├── r32i1p1f1
-    ├── r33i1p1f1
-    ├── r34i1p1f1
-    ├── r35i1p1f1
-    ├── r36i1p1f1
-    ├── r37i1p1f1
-    ├── r38i1p1f1
-    ├── r39i1p1f1
-    ├── r3i1p1f1
-    ├── r40i1p1f1
-    ├── r4i1p1f1
-    ├── r5i1p1f1
-    ├── r6i1p1f1
-    ├── r7i1p1f1
-    ├── r8i1p1f1
-    └── r9i1p1f1
-```
-
-`DATA` directory point to the observational dataset, and `MODELS` directory contains all the experiment in `ACCESS_ESM1-5` historical data. for each experiment directory, the structure is:
-```
-.
-└── ACCESS-ESM1-5-R1
-    ├── cSoil.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Emon/cSoil/gn/files/d20191115/cSoil_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── cVeg.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/cVeg/gn/files/d20191115/cVeg_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── evspsbl.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/evspsbl/gn/files/d20191115/evspsbl_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── gpp.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/gpp/gn/files/d20191115/gpp_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Omon/hfds/gn/files/d20191115/hfds_Omon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfls.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hfls/gn/files/d20191115/hfls_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hfss.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hfss/gn/files/d20191115/hfss_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── hurs.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/hurs/gn/files/d20191115/hurs_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── lai.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/lai/gn/files/d20191115/lai_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── nbp.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/nbp/gn/files/d20191115/nbp_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── pr.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/pr/gn/files/d20191115/pr_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── ra.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/ra/gn/files/d20191115/ra_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rh.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/rh/gn/files/d20191115/rh_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rlds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rlds/gn/files/d20191115/rlds_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rlus.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rlus/gn/files/d20191115/rlus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rsds.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rsds/gn/files/d20191115/rsds_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── rsus.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/rsus/gn/files/d20191115/rsus_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tasmax.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tasmax/gn/files/d20191115/tasmax_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tasmin.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tasmin/gn/files/d20191115/tasmin_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    ├── tas.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Amon/tas/gn/files/d20191115/tas_Amon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-    └── tsl.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Lmon/tsl/gn/files/d20191115/tsl_Lmon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-194912.nc
-```
-
-You can see, the directory contains many kinds of different geoscience data which you can use in ilamb, each `.nc` file is a softlink to the data source.
-
-### Shapfiles
-
-it is some map data which `cartopy` used to display the output. Typically, when you run ilamb, it will automatically download this file through the process, But we predownload it to local so that the whole process will work locally without internet.
-
-To use this folder, you can specific a environment variable named `CARTOPY_DATA_DIR` to the Absolute path to Shapfiles. for NCI user we will show how to define this in the `PBS.job` script
-
-### Mdoelroute.txt
-
-this is a convenient way for people to define modelresult dataset they need. a example is like:
-```
-bcc-csm1-1          , MODELS/CMIP5/bcc-csm1-1     , CMIP5
-CanESM2             , MODELS/CMIP5/CanESM2        , CMIP5
-CESM1-BGC           , MODELS/CMIP5/CESM1-BGC      , CMIP5
-...
-BCC-CSM2-MR         , MODELS/CMIP6/BCC-CSM2-MR    , CMIP6
-CanESM5             , MODELS/CMIP6/CanESM5        , CMIP6
-CESM2               , MODELS/CMIP6/CESM2          , CMIP6
-```
-
-where the first entry can be any name you like, the next is the path of the
-top level model directory (path can be absolute or relative to ILAMB_ROOT),
-and the last is a group identifier. For each model in this list, ILAMB will
-walk through all netcdf files and directories under that path, following
-symbolic links. It builds a small database (dictionary) of which files have
-which variables. There is no special organization needed.
-
-For more specific example, if you want to confront some different experiments of `ACCESS_ESM1-5`, you can organise your Modelroute.txt file like this:
-```
-ACCESS_ESM1-5-r1i1p1f1          , MODELS/r1i1p1f1/ACCESS_ESM1-5-R1     , CMIP6
-ACCESS_ESM1-5-r2i1p1f1          , MODELS/r2i1p1f1/ACCESS_ESM1-5-R1     , CMIP6
-ACCESS_ESM1-5-r3i1p1f1          , MODELS/r3i1p1f1/ACCESS_ESM1-5-R1     , CMIP6
-...
-```
-
-### PBS jobs submit
-If you not familiar with the PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs)
-
-We provide some example of PBS jobs script:
-```
-#!/bin/bash
-
-#PBS -N test
-#PBS -l wd
-#PBS -P iq82
-#PBS -q express
-#PBS -l walltime=10:00:00  
-#PBS -l ncpus=1
-#PBS -l mem=32GB           
-#PBS -l jobfs=10GB        
-#PBS -l storage=gdata/kj13+gdata/fs38
-#PBS -v MODULEPATH=$MODULEPATH:/g/data/kj13/environments
-   
-module load conda/ilamb_dev
-export ILAMB_ROOT=$PWD/ILAMB_ROOT
-export CARTOPY_DATA_DIR=$PWD
-
-ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global
-```
-We will not explain all the PBS Directives here, just pick up something we think is necessary.
-
-`#PBS -q express` for people who want to run the process in a queue which can connect to internet, you can change this into `#PBS -q copyq`. But we recommand you to run in a local env cause we have download everything you need in local.
-
-`#PBS -l storage=gdata/kj13+gdata/fs38`
-Because `ACCESS_ESM1-5` model result was store in group fs38 and all the `ilamb` data and file are store in group kj13. you may need the authority to access both of this two groups first.
-
-`module load conda/ilamb_dev`
-Load the conda env we build for ilamb.
-
-`export ILAMB_ROOT=$PWD/ILAMB_ROOT`Define the env variable to `ILAMB_ROOT`.
-
-`CARTOPY_DATA_DIR=$PWD`Define the env variable to `CARTOPY_DATA_DIR`
- 
- `ilamb-run --config CMIP.cfg --model_setup $PWD/modelroute.txt --regions global`
- this is the main directive to run ilamb.`--config` to specify the config file you use.`model_setup`specify the path to modelroute.txt.`--region`define the region of this ilamb process,youhave some alternative choice [here](https://www.ilamb.org/doc/ilamb_run.html).
+We have finish the introduction of basic `ilamb` usage. We believe you have some understanding of `ilamb` and cont wait to use it. if you still have any question or you want some developer level support, you can find more detail in their [official tutorial](https://www.ilamb.org/doc/tutorial.html).
