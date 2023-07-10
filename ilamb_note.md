@@ -2,6 +2,9 @@
 
 This tutorial explains how you can setup and run International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB) tests on `NCI` infrastracture. Both projects are maintained as `python` code under the package name `ilamb`.
 
+## Write at the beginning
+This tutorial is quilt long, in order to save your time, if you like to learn ILAMB from scritch, you can start from the beginning, for users who just want to know how to run ILAMB on NCI, you can start from [here](#5-run-ilamb-on-nci). 
+
 The Tutorial contains:
 1) [Background](#1-background-international-land-model-benchmarking-ilamb-and-international-ocean-model-benchmarking-iomb)
 2) [Installation guide](#2-installing-ilamb)
