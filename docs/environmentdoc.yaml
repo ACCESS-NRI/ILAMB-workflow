@@ -3,13 +3,11 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - accessible-pygments=0.0.4
   - alabaster=0.7.12
   - babel=2.11.0
   - beautifulsoup4=4.12.2
   - brotlipy=0.7.0
   - bzip2=1.0.8
-  - ca-certificates=2023.7.22
   - certifi=2023.7.22
   - cffi=1.15.1
   - charset-normalizer=2.0.4
@@ -24,15 +22,12 @@ dependencies:
   - libffi=3.4.4
   - markdown-it-py=2.2.0
   - markupsafe=2.1.1
-  - mdit-py-plugins=0.4.0
   - mdurl=0.1.0
   - myst-parser=0.18.1
   - ncurses=6.4
-  - openssl=3.1.2
   - packaging=23.0
   - pip=23.2.1
   - pycparser=2.21
-  - pydata-sphinx-theme=0.13.3
   - pygments=2.15.1
   - pyopenssl=23.2.0
   - pysocks=1.7.1
@@ -47,7 +42,6 @@ dependencies:
   - snowballstemmer=2.2.0
   - soupsieve=2.3.2.post1
   - sphinx=5.0.2
-  - sphinx-book-theme=1.0.1
   - sphinxcontrib-applehelp=1.0.2
   - sphinxcontrib-devhelp=1.0.2
   - sphinxcontrib-htmlhelp=2.0.0
@@ -64,4 +58,11 @@ dependencies:
   - xz=5.4.2
   - yaml=0.2.5
   - zlib=1.2.13
+  - pip:
+      - pydata-sphinx-theme=0.13.3
+      - openssl=3.1.2
+      - accessible-pygments=0.0.4
+      - ca-certificates=2023.7.22
+      - sphinx-book-theme=1.0.1
+      - mdit-py-plugins=0.4.0
 prefix: /opt/anaconda3/envs/readthedoc
