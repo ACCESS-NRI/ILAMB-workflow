@@ -61,7 +61,6 @@ dependencies:
   - pip:
       - pydata-sphinx-theme
       - accessible-pygments
-      - ca-certificates
       - sphinx-book-theme
       - mdit-py-plugins
 prefix: /opt/anaconda3/envs/readthedoc
