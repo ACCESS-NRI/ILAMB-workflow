@@ -10,6 +10,8 @@ Welcome to ILAMB-NCI-DOC's documentation!
    :maxdepth: 2
 
    self
+   ./ilamb_note.md
+   ./LMT.md
   
 
 
