@@ -59,10 +59,10 @@ dependencies:
   - yaml=0.2.5
   - zlib=1.2.13
   - pip:
-      - pydata-sphinx-theme=0.13.3
-      - openssl=3.1.2
-      - accessible-pygments=0.0.4
-      - ca-certificates=2023.7.22
-      - sphinx-book-theme=1.0.1
-      - mdit-py-plugins=0.4.0
+      - pydata-sphinx-theme
+      - openssl
+      - accessible-pygments
+      - ca-certificates
+      - sphinx-book-theme
+      - mdit-py-plugins
 prefix: /opt/anaconda3/envs/readthedoc
