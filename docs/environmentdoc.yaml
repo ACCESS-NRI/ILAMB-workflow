@@ -60,7 +60,6 @@ dependencies:
   - zlib=1.2.13
   - pip:
       - pydata-sphinx-theme
-      - openssl
       - accessible-pygments
       - ca-certificates
       - sphinx-book-theme
