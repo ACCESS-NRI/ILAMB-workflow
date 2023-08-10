@@ -5,14 +5,14 @@ This tutorial explains how you can setup and run International Land Model Benchm
 
 The Tutorial contains tow part:
 #### How to use ILAMB on NCI
-1) [Run `liamb` on `NCI`](#1-run-ilamb-on-nci)
+1) [Run `liamb` on `NCI`](#run-ilamb-on-nci)
 
 #### Basic ILAMB setup
-2) [Background](#2-background-international-land-model-benchmarking-ilamb-and-international-ocean-model-benchmarking-iomb)
-3) [Installation guide](#3-installing-ilamb)
-4) [Setup details](#4-configuring-ilamb)
-5) [Run `ilamb`](#5-run-ilamb)
-6) [Fix your setup with `ilamb-doctor`](#6-fix-your-setup-with-ilamb_doctor)
+2) [Background](#background-international-land-model-benchmarking-ilamb-and-international-ocean-model-benchmarking-iomb)
+3) [Installation guide](#installing-ilamb)
+4) [Setup details](#configuring-ilamb)
+5) [Run `ilamb`](#run-ilamb)
+6) [Fix your setup with `ilamb-doctor`](#fix-your-setup-with-ilamb_doctor)
 
 For people who want to use ILAMB on NCI, you can quick start from the first part.
 For people who would like to build up ILAMB on their owe equipment or want to know ILAMB in detail or even want to develop based on ILAMB, we suggest you read the whole tutorial.
@@ -37,7 +37,7 @@ ACCESS-NRI environment: group xp65
 
 ACCESS-NRI DATA for ILMAB: group kj13 
 
-For defination of config file you can find a detailed explaination [here](#42-set-up-a-config-file), and for pbs(portable batch system) job setup, youcan find what you need [here](#12-portable-batch-system-pbs-jobs-on-nci) 
+For defination of config file you can find a detailed explaination [here](#set-up-a-config-file), and for pbs(portable batch system) job setup, youcan find what you need [here](#portable-batch-system-pbs-jobs-on-nci) 
 
 
 
@@ -141,13 +141,13 @@ export ILAMB_ROOT=/absolute/path/where/ILAMB_ROOT/actually/is
 export CARTOPY_DATA_DIR=/absolute/path/where/shapefiles/actually/are
 ```
 
-Once the jobs are finished, you can again inspect the outcome as described in [Section 5.3](#53-viewing-the-benchmarking-output-in-your-browser)
+Once the jobs are finished, you can again inspect the outcome as described in [Section 5.3](#viewing-the-benchmarking-output-in-your-browser)
                                                                                                    
 ## 2) Background: International Land Model Benchmarking (ILAMB) and International Ocean Model Benchmarking (IOMB)
 
 As earth system models (ESMs) become increasingly complex, there is a growing need for comprehensive and multi-faceted evaluation of model projections. The International Land Model Benchmarking (ILAMB) project is a model-data intercomparison and integration project designed to improve the performance of land models and, in parallel, improve the design of new measurement campaigns to reduce uncertainties associated with key land surface processes.
 
-If you have used (and installed) `ilamb` on NCI and know the basic principle of `ilamb`, you can start from [Section 1) Guide for using ilamb on NCI](#1-run-ilamb-on-nci).
+If you have used (and installed) `ilamb` on NCI and know the basic principle of `ilamb`, you can start from [Section 1) Guide for using ilamb on NCI](#run-ilamb-on-nci).
 
 ## 3) Installing `ilamb`
 
@@ -167,10 +167,10 @@ If you want to install `ilamb` yourself, please follow the official installation
 
 Before you can run `ilamb`, you need to configure a few things:
 
-4.1. [Organise the ILAMB_ROOT path](#41-organise-the-ilamb_root-path)  
-4.2. [Set up a `config` file](#42-set-up-a-config-file)  
-4.3. [Set up a `modelroute` and `regions` files](#43-set-up-modelroute-and-regions-files) (Optional, if you want to run only a subset of models and/or specific regions of the world)
-4.4. [Download a `shapefiles` files locally](#44-downloadlink-shapefiles-files-locally) (Optional online, necessary offline e.g. on NCI compute nodes)
+4.1. [Organise the ILAMB_ROOT path](#organise-the-ilamb_root-path)  
+4.2. [Set up a `config` file](#set-up-a-config-file)  
+4.3. [Set up a `modelroute` and `regions` files](#set-up-modelroute-and-regions-files) (Optional, if you want to run only a subset of models and/or specific regions of the world)
+4.4. [Download a `shapefiles` files locally](#downloadlink-shapefiles-files-locally) (Optional online, necessary offline e.g. on NCI compute nodes)
 
 ### 4.1) Organise the ILAMB_ROOT path
 
@@ -183,9 +183,9 @@ If you do not have your own files yet, you can download and use [example files](
 The following tree represents the organization of the contents of this extracted sample data (Note: We renamed the main directory name):
 ```
 $ILAMB_ROOT (renamed from "ILAMB_sample")
-├── sample.cfg (see [Section 3.2](#32-set-up-a-config-file))
-├── modelroute.txt (optional, see [Section 3.3](#33-set-up-modelroute-and-regions-files))
-├── regions.txt (optional, see [Section 3.3](#33-set-up-modelroute-and-regions-files))
+├── sample.cfg (see [Section 3.2](#set-up-a-config-file))
+├── modelroute.txt (optional, see [Section 3.3](#set-up-modelroute-and-regions-files))
+├── regions.txt (optional, see [Section 3.3](#set-up-modelroute-and-regions-files))
 ├── DATA
 │   ├── albedo
 │   │   └── CERES
@@ -399,11 +399,11 @@ The next stage is the post-processing. This is done as a separate loop to exploi
 
 ### 5.2) Run specific models and regions
 
-As mentioned in [Section 4.3](#43-set-up-modelroute-and-regions-files), you can adjust the models and regions that `ilamb` will run on. You can find more information in the `ilamb` [tutorial](https://www.ilamb.org/doc/ilamb_run.html). Calling `ilamb-run` with both specifications, would look like:
+As mentioned in [Section 4.3](#set-up-modelroute-and-regions-files), you can adjust the models and regions that `ilamb` will run on. You can find more information in the `ilamb` [tutorial](https://www.ilamb.org/doc/ilamb_run.html). Calling `ilamb-run` with both specifications, would look like:
 ```
 ilamb-run --config cmip.cfg --model_setup modelroute.txt --regions regions.txt
 ```
-where you call a specific config file (see [Section 4.2](#42-set-up-a-config-file)) as well as specific model routes and regions with files (see [Section 4.3](#43-set-up-modelroute-and-regions-files)).
+where you call a specific config file (see [Section 4.2](#set-up-a-config-file)) as well as specific model routes and regions with files (see [Section 4.3](#set-up-modelroute-and-regions-files)).
 
 ### 5.3) Viewing the benchmarking output in your browser
 
