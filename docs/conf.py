@@ -77,7 +77,7 @@ html_theme_options = {
     "use_edit_page_button": False,
     "github_url": "https://github.com/ACCESS-NRI/ILAMB-workflow",
     "logo": {
-        "image_light": "_static/access_logo_rgb.svg",
-        "image_dark": "_static/access_logo_rgb.svg",
+        "image_light": "source/_static/access_logo_rgb.svg",
+        "image_dark": "source/_static/access_logo_rgb.svg",
     },
 }
