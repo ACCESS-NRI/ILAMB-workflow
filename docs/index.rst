@@ -10,7 +10,7 @@ Welcome to ILAMB-NCI-DOC's documentation!
    :maxdepth: 2
    :hidden:
 
-   source/self
+   self
    source/ilamb_note.md
    source/visualise_result.md
    source/LMT.md
