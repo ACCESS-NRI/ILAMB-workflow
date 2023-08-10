@@ -8,10 +8,12 @@ Welcome to ILAMB-NCI-DOC's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
-   self
-   ./ilamb_note.md
-   ./LMT.md
+   source/self
+   source/ilamb_note.md
+   source/visualise_result.md
+   source/LMT.md
   
 
 
