@@ -1,0 +1,3 @@
+/g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1
+/g/data/oi10/replicas/CMIP6/CMIP/BCC/BCC-ESM1/historical/r1i1p1f1
+/g/data/oi10/replicas/CMIP6/CMIP/CCCma/CanESM5/historical/r1i1p1f1

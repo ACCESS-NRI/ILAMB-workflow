@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#PBS -N test
+#PBS -l wd
+#PBS -P iq82
+#PBS -q express
+#PBS -l walltime=06:00:00  
+#PBS -l ncpus=1
+#PBS -l mem=190GB           
+#PBS -l jobfs=10GB        
+#PBS -l storage=gdata/kj13+gdata/fs38+gdata/xp65+gdata/hh5+gdata/oi10
+#PBS -o ./output_log
+#PBS -e ./error_log
+
+
+
+# module purge
+# module use /g/data/xp65/public/modules
+# module load conda/access-med-0.1
+
+module use /g/data/hh5/public/modules
+module load conda
+
+
+python convert.py --init ./init.txt --output ./test
