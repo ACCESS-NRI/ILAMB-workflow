@@ -1,4 +1,4 @@
-# Getting started with ILAMB on NCI
+# Getting started with ILAMB at NCI
 
 As earth system models (ESMs) become increasingly complex, there is a growing need for comprehensive and multi-faceted evaluation of model projections. The International Land Model Benchmarking (ILAMB) project is a model-data intercomparison and integration project designed to improve the performance of land models and, in parallel, improve the design of new measurement campaigns to reduce uncertainties associated with key land surface processes.
 
