@@ -230,14 +230,19 @@ Maybe you will be in queue for a while, it depends on what kind of queue and how
 This is the Desktop of your VDI:
 ![](./image/vdi.png)
 
-Then `cd` to the ilamb result directory(default is `_build` directory), and use commmand below to host a localserver, and access `localhost` in your browser to see the result.
+Then open a terminal and navigate to the ilamb result directory(default is `_build` directory), and use commmand below to host a localserver, and access `localhost` in your browser to see the result.
 ```
 python3 -m http.server
 ```
 localhost address:
 ```
 http://0.0.0.0:8000/
+
 ```
+
+#### Jupyter-hub interface
+
+The Jupyter interface available via ARE can also be used to visualise the outputs of ILAMB.
 
 ## Advanced usages                                                                                                 
 
