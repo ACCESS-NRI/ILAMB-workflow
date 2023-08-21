@@ -99,12 +99,10 @@ There are two main branches in this directory:
 
 1. the `DATA` directory: this is where we keep the observational datasets each in a subdirectory bearing the name of the variable. This directory can be setup as a symlink to the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
 ](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703)
-
 `ln -sf /g/data/ct11/access-nri/replicas/ILAMB DATA`
 
 2. the `MODEL` directory: this directory can be populated with symbolic links to the model outputs.
 Example:
-
 `ln -s /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r* $ILAMB_ROOT/MODELS`
 
 ### ILAMB configuration file
