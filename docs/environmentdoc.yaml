@@ -48,6 +48,7 @@ dependencies:
   - sphinxcontrib-jsmath=1.0.1
   - sphinxcontrib-qthelp=1.0.3
   - sphinxcontrib-serializinghtml=1.1.5
+  - sphinx-markdown-tables
   - sqlite=3.41.2
   - tk=8.6.12
   - typing-extensions=4.7.1
@@ -63,5 +64,4 @@ dependencies:
       - accessible-pygments
       - sphinx-book-theme
       - mdit-py-plugins
-      - sphinx-markdown-tables
 prefix: /opt/anaconda3/envs/readthedoc
