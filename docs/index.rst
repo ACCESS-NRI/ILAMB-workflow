@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ILAMB-NCI-DOC's documentation!
-=========================================
+ACCESS-NRI documentation for ILAMB support at NCI
+==================================================
 
 .. toctree::
    :maxdepth: 2
