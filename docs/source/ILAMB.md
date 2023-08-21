@@ -16,10 +16,25 @@ ILAMB development is primarily performed by the [RUBISCO](https://www.bgc-feedba
 
 ### ILAMB CMIP confrontations maintained by ACCESS-NRI
 
-[CMIP5](http://130.56.247.78/build_al33/index.html)
-[CMIP6](http://130.56.247.78/build_oi10_2/index.html)
-[CMIP6](http://130.56.247.78/build_r33/index.html)
-[IOMB](http://130.56.247.78/build_iomb/index.html)
+
+While the datasets and software found on this site can be used to confront models, we also maintain a collection of results for the community use. Below is a short description of each along with a preview and links to the full results page.
+
+
+[Land Comparison of CMIP5 and CMIP6 Models](http://130.56.247.78/build_oi10_2/index.html)
+We examine the performance of historical simulations from a selection of coupled Earth system models with a contribution in the CMIP5 and CMIP6 eras.
+![](./image/ilamb_cmip5v6.png)
+
+[Land Comparison of CMIP6 Models](http://130.56.247.78/build_al33/index.html)
+This land-focused study includes coupled model results for the historical experiment from the CMIP6 era. We also use this as a testing ground to include new datasets and additional models. If you have a suggestion of a reference dataset or would like to request we include a model, please raise an issue.
+![](./image/ilamb_cmip6.png)
+
+[Land Comparison of Offline CMIP6 Models](http://130.56.247.78/build_r33/index.html)
+We examine performance differences among a selection of land models (CLM, ISBA-CTRIP, and JSBACH) run using different forcings (GSWP3, CRUJRA, and Princeton).
+![](./image/ilamb_landhist.png)
+
+[Ocean Comparison of CMIP5 and CMIP6 Models](http://130.56.247.78/build_iomb/index.html)
+While the focus of ILAMB has been on land, we also have used the software to compare ocean model output which we refer to as International Ocean Model Benchmarking (IOMB). This study is analagous to the land comparison of CMIP5 and CMIP6 era models over the historical period.
+![](./image/iomb_cmip5v6.png)
 
 
 ## Observations and Model outputs available at NCI.
