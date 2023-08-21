@@ -44,6 +44,9 @@ We currently only support CF-compliant observational datasets and their confront
 The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) collection aggregates data from various sources and format in a CF-compliant, netCDF4 file which can be used for model benchmarking via ILAMB. The collection has been replicated in the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
 ](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703) and is maintained by the ACCESS-NRI Model Evaluation and Diagnostics team. Please contact ACCESS-NRI if you requires help with datasets. The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) is an Open Source project which welcomes contributions from the community.
 
+![](./image/access-nri_dataNCI.png)
+
+
 You can [request access to the ACCESS-NRI collection](https://my.nci.org.au/mancini/project/ct11/join).
 
 Depending on their needs, users may require access to a range of NCI data collections and projects.
