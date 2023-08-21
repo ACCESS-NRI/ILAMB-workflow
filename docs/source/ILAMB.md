@@ -4,7 +4,6 @@ As earth system models (ESMs) become increasingly complex, there is a growing ne
 
 This document explains how to run the [International Land Model Benchmarking (ILAMB)](https://www.ilamb.org) and International Ocean Model Benchmarking (IOMB) model evaluation tools on NCI infrastracture.
 
-[!WARNING]  
 The documentation provided here is designed to supplement, rather than replace, the official [ILAMB documentation](https://www.ilamb.org/doc/). This documentation is tailored to using the tool within the NCI infrastructure. We encourage users to read the ILAMB documentation and to
 try on the [ILAMB Tutorial](https://www.ilamb.org/doc/tutorial.html).
 
