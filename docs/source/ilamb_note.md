@@ -21,9 +21,7 @@ NCI users will need to request access to the following projects:
 
 | Project Name   | Project Code  | DOI  |
 | :-:            | :-:           |:-:   |
-
-|   ACCESS-NRI Replicated Datasets for Climate Model Evaluation | ct11 [join](https://my.nci.org.au/mancini/project/ct11/join) |   [10.25914/b57s-2866
-](https://dx.doi.org/10.25914/b57s-2866)   |
+|   ACCESS-NRI Replicated Datasets for Climate Model Evaluation | ct11 [join](https://my.nci.org.au/mancini/project/ct11/join) |   [10.25914/b57s-2866](https://dx.doi.org/10.25914/b57s-2866)   |
 |   Earth System Grid Federation (ESGF) Australian CMIP6-era Datasets | fs38 [join](https://my.nci.org.au/mancini/project/fs38/join) |   [10.25914/5e6acd0492b39](https://dx.doi.org/10.25914/5e6acd0492b39)   |
 |  Earth System Grid Federation (ESGF) Replicated CMIP6-era Datasets  | oi10 [join](https://my.nci.org.au/mancini/project/oi10/join) |   [10.25914/Q1CT-RM13](https://dx.doi.org/10.25914/Q1CT-RM13)   |
 |   CSIRO-Mk3-6-0 model output prepared for CMIP5  | rr3 [join](https://my.nci.org.au/mancini/project/rr3/join) |   N/A |
