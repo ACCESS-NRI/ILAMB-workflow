@@ -4,16 +4,36 @@ As earth system models (ESMs) become increasingly complex, there is a growing ne
 
 This document explains how to run the [International Land Model Benchmarking (ILAMB)](https://www.ilamb.org) and International Ocean Model Benchmarking (IOMB) model evaluation tools on NCI infrastracture.
 
+[!WARNING]  
+The documentation provided here is designed to supplement, rather than replace, the official [ILAMB documentation](https://www.ilamb.org/doc/). This documentation is tailored to using the tool within the NCI infrastructure. We encourage users to read the ILAMB documentation and to
+try on the [ILAMB Tutorial](https://www.ilamb.org/doc/tutorial.html).
+
+ILAMB development is primarily performed by the [RUBISCO](https://www.bgc-feedbacks.org/) Science Focus Area and supported by the [RGMA](https://climatemodeling.science.energy.gov/program-area/regional-global-model-analysis) Activity of the [EESSD](https://science.osti.gov/ber/Research/eessd) division of the [BER](https://science.osti.gov/ber) program in the United States Department of Energy's Office of Science.
+
+### How to cite ILAMB?
+
+*Collier, N., Hoffman, F. M., Lawrence, D. M., Keppel-Aleks, G., Koven, C. D., Riley, W. J., et al. (2018). The International Land Model Benchmarking (ILAMB) system: Design, theory, and implementation. Journal of Advances in Modeling Earth Systems, 10, 2731–2754. https://doi.org/10.1029/2018MS001354*
+
+### ILAMB CMIP confrontations maintained by ACCESS-NRI
+
+[CMIP5](http://130.56.247.78/build_al33/index.html)
+[CMIP6](http://130.56.247.78/build_oi10_2/index.html)
+[CMIP6](http://130.56.247.78/build_r33/index.html)
+[IOMB](http://130.56.247.78/build_iomb/index.html)
+
+
 ## Observations and Model outputs available at NCI.
 
-We currently only support CF-compliant observational datasets and confrontation with CMORised model outputs.
+We currently only support CF-compliant observational datasets and their confrontation with CMORised model outputs.
 
-The ILAMB-DATA collection of observational dataset has been replicated in the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
-](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703)
+The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) collection aggregates data from various sources and format in a CF-compliant, netCDF4 file which can be used for model benchmarking via ILAMB. The collection has been replicated in the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
+](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703) and is maintained by the ACCESS-NRI Model Evaluation and Diagnostics team. Please contact ACCESS-NRI if you requires help with datasets. The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) is an Open Source project which welcomes contributions from the community.
 
-You can [request access to the collection](https://my.nci.org.au/mancini/project/ct11/join).
+You can [request access to the ACCESS-NRI collection](https://my.nci.org.au/mancini/project/ct11/join).
 
-NCI users will need to request access to the NCI data collections and projects:
+Depending on their needs, users may require access to a range of NCI data collections and projects.
+Here we list the NCI collections required to run the CMIP confrontations examples available with ILAMB (see [here](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data)):
+
 
 | Project Name   | Project Code  | DOI  |
 | :-:            | :-:           |:-:   |
@@ -32,7 +52,7 @@ Projects for data analysis (choose one):
 
 For NCI users, ACCESS-NRI is providing a conda environment with the latest version of ILAMB. 
 
-You can load and activate it via:
+The module can be loaded as follow:
 
 ```
 >>> module use /g/data/xp65/public/modules
