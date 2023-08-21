@@ -2,20 +2,7 @@
 
 This tutorial explains how you can run the [International Land Model Benchmarking (ILAMB)](https://www.ilamb.org) and International Ocean Model Benchmarking (IOMB) model evaluation tools on NCI infrastracture using the existing NCI CMIP data collections.
 
-The Tutorial contains two parts:
-
-#### Part 1: Getting started with ILAMB on NCI
-1) [Run ILAMB on `NCI`](#run-ilamb-on-nci)
-
-#### Part 2 (Advanced users): Setting up ILAMB on NCI 
-
-2) [Background](#background-international-land-model-benchmarking-ilamb-and-international-ocean-model-benchmarking-iomb)
-3) [Installation guide](#installing-ilamb)
-4) [Setup details](#configuring-ilamb)
-5) [Run ILAMB](#run-ilamb)
-6) [Fix your setup with `ilamb-doctor`](#fix-your-setup-with-ilamb_doctor)
-
-## 1) Run ILAMB on NCI
+## 1) Getting started with ILAMB on NCI
 
 NCI users will need to request access to the following projects:
 
