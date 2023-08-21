@@ -10,7 +10,8 @@ ACCESS-NRI documentation for ILAMB support at NCI
    :maxdepth: 2
 
    self
-   source/ilamb_note.md
+   source/getting_started.md
+   source/nci_admin.md
    source/visualise_result.md
    source/LMT.md
   

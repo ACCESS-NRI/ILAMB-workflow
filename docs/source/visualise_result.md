@@ -14,7 +14,7 @@ In this tutorial, we mainly provide guidance for use ARE for ilamb result, for u
 ARE can be accessed at [are.nci.org.au](https://are.nci.org.au/). NCI users can use NCI username and password to login. If you are a new user of NCI, please apply an account at [here](https://my.nci.org.au/mancini/signup/0)
 
 
-## Virsual Desktop
+## Virtual Desktop
 
 When you log into ARE, click Virsual Desktop Instance(VDI), and you will see the setup page, it will setup the VDI just like you setup your PBS job on NCI CLI, so just follow the instruction on the page. Only one thing need to ensure is make sure your group which contain the ilamb result is in the storage, otherwise you cannot access the directory in your VDI. For more imformation about PBS job, here is the [link](https://opus.nci.org.au/display/Help/PBS+Directives+Explained) to PBS directive
 
