@@ -40,8 +40,8 @@ While the focus of ILAMB has been on land, we also have used the software to com
 
 We currently only support CF-compliant observational datasets and their confrontation with CMORised model outputs.
 
-The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) collection aggregates data from various sources and format in a CF-compliant, netCDF4 file which can be used for model benchmarking via ILAMB. The collection has been replicated in the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
-](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703) and is maintained by the ACCESS-NRI Model Evaluation and Diagnostics team. Please contact ACCESS-NRI if you requires help with datasets. The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) is an Open Source project which welcomes contributions from the community.
+The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) collection aggregates data from various sources and formats in a CF-compliant, netCDF4 files which can be used for model benchmarking via ILAMB. The collection has been replicated in the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
+](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703) and is maintained by the ACCESS-NRI Model Evaluation and Diagnostics team. Please contact the [ACCESS-NRI team](https://www.access-nri.org.au/model-evaluation-and-diagnostics-med-team/) if you requires help with datasets. The [ILAMB-DATA](https://github.com/rubisco-sfa/ILAMB-Data) is an Open Source project which welcomes contributions from the community.
 
 ![](./image/access-nri_dataNCI.png)
 
@@ -64,16 +64,21 @@ Projects for data analysis (choose one):
 | Project Name   | Project Code  |
 | :-:            | :-:           |
 | ACCESS MED Analysis Environments | xp65 [join](https://my.nci.org.au/mancini/project/xp65/join) |
+| CLEX Analysis Environments | h55 [join](https://my.nci.org.au/mancini/project/hh5/join) |
 
 ## ILAMB on NCI-Gadi
 
-For NCI users, ACCESS-NRI is providing a conda environment with the latest version of ILAMB. 
+For NCI users, ACCESS-NRI is providing a conda environment with the latest version of ILAMB through project `xp65`. It is also provided through the CLEX analysis environment project `hh5`.
 
-The module can be loaded as follow:
-
+To load the module via project `xp65`, you need to prompt:
 ```
 >>> module use /g/data/xp65/public/modules
 >>> module load conda/access-med
+```
+For `hh5`, you need to use:
+```
+>>> module use /g/data/hh5/public/modules
+>>> module load conda/analysis3
 ```
 
 To run `ilamb`, you need to execute the command `ilamb-run` with a number of arguments/files:
