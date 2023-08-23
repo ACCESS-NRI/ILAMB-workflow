@@ -123,9 +123,9 @@ The tool will automatically create the folder structure above. Models output can
 
 ```yaml
 datasets:
-  - {institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: latest}
-  - {institute: BCC, dataset: BCC-ESM1, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: v20181114}
-  - {institute: CCCma, dataset: CanESM5, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: v20190429}
+  - {institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
+  - {institute: BCC, dataset: BCC-ESM1, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
+  - {institute: CCCma, dataset: CanESM5, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
 ```
 
 The tool can then be run from the command line:
@@ -195,15 +195,14 @@ Because of the computational costs, you need to run ILAMB through a Portable Bat
 
 ### Submitting a PBS job
 
-The following default PBS file, let's call it `ilamb_test.sh`, can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
+The following default PBS file, let's call it `ilamb_test.job`, can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
 
 ```
 #!/bin/bash
 
-# For help with PBS directives on Gadi, go to https://opus.nci.org.au/display/Help/PBS+Directives+Explained
 #PBS -N ilamb_test
 #PBS -l wd
-#PBS -P your_compute_project_here
+#PBS -P iq82
 #PBS -q normalbw
 #PBS -l walltime=0:20:00  
 #PBS -l ncpus=14
@@ -212,13 +211,13 @@ The following default PBS file, let's call it `ilamb_test.sh`, can help you to s
 #PBS -l storage=gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
 
 # ILAMB is provided through projects hh5 and xp65. We will use the latter here
-# module use /g/data/hh5/public/modules
-# module load conda
-module use /g/data/xp65/public/modules
-module load conda/access-med
+#module use /g/data/xp66/public/modules
+#module load conda/access-med
+module use /g/data/hh5/public/modules
+module load conda/analysis3
 
 # Define the ILAMB Path, expecting it to be where you start this job from
-export ILAMB_ROOT=.
+export ILAMB_ROOT=./
 export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
 # Run ILAMB in parallel with the config.cfg configure file for the models defined in model_setup.txt
@@ -227,29 +226,31 @@ mpiexec -n 10 ilamb-run --config config.cfg --model_setup model_setup.txt --regi
 
 You should adjust this file to your own specifications (including the storage access to your models). Save the file in the `$ILAMB_ROOT` and submit its job to the queue from there via 
 ```
-qsub ilamb_test.sh
+qsub ilamb_test.job
 ```
 
 Running this job will create a `_build` directory with the comparison results within `$ILAMB_ROOT`. You can adjust the place of this directory via a agrument `--build_dir` argument for `ilamb-run`.
 
 ## Visualisation of ILAMB outputs
 
-Result visualisation is an important part of ilamb, it provide a lot of visulaized graphs to allow users to evaluate the performance of each models in various aspect. The result is shown in a html page, which is not possible to visualise it in CLI. So we gonna teach user how to use NCI-ARE to explore the ilamb result.
+Result visualisation is an important part of ilamb, it provide a lot of visualized graphs to allow users to evaluate the performance of each models for various aspects. The result is shown in an `html` page.
 
-### ARE
+NCI provides a web-based graphical interface of the Australian Research Environment (ARE) for such purposes.
 
-ARE is a web-based graphical interface for performing your computational research. It combines the familiarity of your regular desktop/laptop with the power of NCI’s world-class research HPC capabilities. ARE gives you access to NCI’s Gadi supercomputer and data collections, all from a simple, graphical interface. ARE consists of a number of applications that support your research such as Virtual Desktop, JupyterLab, Terminal, etc.
+### Australian Research Environment (ARE)
 
-In this tutorial, we mainly provide guidance for use ARE for ilamb result, for user who want more imformation about ARE, you can find it [here](https://opus.nci.org.au/display/Help/ARE+User+Guide). 
+ARE is a web-based graphical interface for performing your computational research. It combines the familiarity of your regular desktop/laptop with the power of NCI's world-class research HPC capabilities. ARE gives you access to NCI's Gadi supercomputer and data collections, all from a simple, graphical interface. ARE consists of a number of applications that support your research such as Virtual Desktop, JupyterLab, Terminal, etc.
+
+In this tutorial, we mainly provide guidance for use ARE for ilamb result. For user who want more imformation about ARE, you can find it [here](https://opus.nci.org.au/display/Help/ARE+User+Guide). 
 
 #### Access to ARE
 
-ARE can be accessed at [are.nci.org.au](https://are.nci.org.au/). NCI users can use NCI username and password to login. If you are a new user of NCI, please apply an account at [here](https://my.nci.org.au/mancini/signup/0)
+ARE can be accessed at [are.nci.org.au](https://are.nci.org.au/). NCI users can use NCI username and password to login. If you are a new user of NCI, please apply an account at [here](https://my.nci.org.au/mancini/signup/0).
 
 
 #### Virtual Desktop
 
-When you log into ARE, click Virsual Desktop Instance(VDI), and you will see the setup page, it will setup the VDI just like you setup your PBS job on NCI CLI, so just follow the instruction on the page. Only one thing need to ensure is make sure your group which contain the ilamb result is in the storage, otherwise you cannot access the directory in your VDI. For more imformation about PBS job, here is the [link](https://opus.nci.org.au/display/Help/PBS+Directives+Explained) to PBS directive
+When you log into ARE, click Virsual Desktop Instance(VDI), and you will see the setup page, it will setup the VDI just like you setup your PBS job on NCI CLI, so just follow the instruction on the page. Make sure that the project on which your `ilamb` data is stored is added to the 'Storage' field. Otherwise you cannot access the directory in your VDI. NCI provides more both user guides for [VDI](https://opus.nci.org.au/display/Help/2.1.+Connecting+to+the+VDI) and [PBS directives](https://opus.nci.org.au/display/Help/PBS+Directives+Explained).
 
 
 ![](./image/storage.png)
@@ -266,15 +267,26 @@ Maybe you will be in queue for a while, it depends on what kind of queue and how
 This is the Desktop of your VDI:
 ![](./image/vdi.png)
 
-Then open a terminal and navigate to the ilamb result directory(default is `_build` directory), and use commmand below to host a localserver, and access `localhost` in your browser to see the result.
+Then open a terminal (top left of the VDI screen) and navigate to the ilamb result directory (default is `_build` directory), and use commmand below to host a localserver.
 ```
 python3 -m http.server
 ```
+
+You can then start Firefox in the VDI screen and access the following address:
 localhost address:
 ```
 http://0.0.0.0:8000/
-
 ```
+
+For our `config.cfg` example we expect to see the following website (which shows the available observational data in blue after clicking on <i>Albedo</i> and <i>Surface Upward SW Radiation</i>):
+
+<p align="center">
+<img src="./image/vdi_window1.png" width="50%">
+</p>
+
+Clicking on `CERESed4.1` under the `Albedo` measurements then opens a new tab which allows you to browse through more extended and quantitative comparisons of your selected Models when confronted with measurements from the <a href="https://ceres.larc.nasa.gov" target="_blank">Clouds and the Earth’s Radiant Energy System (CERES) project</a>:
+
+![](./image/ilamb_loop.gif)
 
 #### Jupyter-hub interface
 
