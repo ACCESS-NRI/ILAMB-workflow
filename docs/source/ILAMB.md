@@ -202,7 +202,7 @@ The following default PBS file, let's call it `ilamb_test.job`, can help you to 
 
 #PBS -N ilamb_test
 #PBS -l wd
-#PBS -P iq82
+#PBS -P your_compute_project_here
 #PBS -q normalbw
 #PBS -l walltime=0:20:00  
 #PBS -l ncpus=14
@@ -210,8 +210,8 @@ The following default PBS file, let's call it `ilamb_test.job`, can help you to 
 #PBS -l jobfs=10GB        
 #PBS -l storage=gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
 
-# ILAMB is provided through projects hh5 and xp65. We will use the latter here
-#module use /g/data/xp66/public/modules
+# ILAMB is provided through projects xp65 and hh5. We will use the latter here
+#module use /g/data/xp65/public/modules
 #module load conda/access-med
 module use /g/data/hh5/public/modules
 module load conda/analysis3
