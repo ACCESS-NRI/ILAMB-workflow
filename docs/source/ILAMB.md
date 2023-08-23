@@ -84,25 +84,42 @@ ILAMB requires files to be organised in a specific directory structure of `DATA`
 The root of this directory structure is the `ILAMB_ROOT` path.
   
 The following tree represents a typical ILAMB_ROOT setup for CMIP comparison on NCI/Gadi:
+
 ```
-$ILAMB_ROOT
-├── ...
-├── DATA -> /g/data/ct11/access-nri/replicas/ILAMB
-└── MODELS
-    ├── r10i1p1f1 -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r10i1p1f1
-    ├── ... (abbreviated)
-    └── r9i1p1f1 -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r9i1p1f1
+ILAMB_ROOT/
+|-- DATA -> /g/data/ct11/access-nri/replicas/ILAMB
+`-- MODELS
+    |-- ACCESS-ESM1-5
+    |   `-- historical
+    |       `-- r1i1p1f1
+    |           |-- cSoil.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Emon/cSoil/gn/latest/cSoil_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
+
 ```
 
 There are two main branches in this directory:
 
 1. the `DATA` directory: this is where we keep the observational datasets each in a subdirectory bearing the name of the variable. This directory can be setup as a symlink to the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
 ](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703)
-`ln -sf /g/data/ct11/access-nri/replicas/ILAMB DATA`
 
 2. the `MODEL` directory: this directory can be populated with symbolic links to the model outputs.
-Example:
-`ln -s /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r* $ILAMB_ROOT/MODELS`
+
+To facilitate the setup of an ILAMB-ROOT tree. ACCESS-NRI provides a tool to automatically generate the required folder structure.
+The `ilamb-tree-generator` is available in the `access-med` environment of the `xp65` project.
+
+The tool will automatically create the folder structure above. Models output can be added by listing them in a yaml file as follow:
+
+```yaml
+datasets:
+  - {institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: latest}
+  - {institute: BCC, dataset: BCC-ESM1, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: v20181114}
+  - {institute: CCCma, dataset: CanESM5, project: CMIP6, exp: historical, ensemble: r1i1p1f1, version: v20190429}
+```
+
+The tool can then be run from the command line:
+
+```bash
+ilamb-tree-generator --datasets models.yml --ilamb_root ILAMB_ROOT
+```
 
 ### ILAMB configuration file
 
