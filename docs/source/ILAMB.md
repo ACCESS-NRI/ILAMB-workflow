@@ -134,7 +134,7 @@ The tool can then be run from the command line:
 ilamb-tree-generator --datasets models.yml --ilamb_root $ILAMB_ROOT
 ```
 
-Note that you will need to remember the NCI projects that these models are originally situated, as you will need to specify them for computing jobs lateron.
+Note that in order to access these models on Gadi, you will need to join the NCI projects that are associated with the models originally paths and you will need to add these projects to the storage access keywords for [computing jobs](#submitting-a-pbs-job) lateron.
 
 ### ILAMB configuration file: `config.cfg`
 
@@ -179,9 +179,9 @@ Assuming you want to compare the three models that we used in [ILAMB_ROOT/MODELS
 
 ```
 # Model Name (used as label), ABSOLUTE/PATH/TO/MODELS or relative to $ILAMB_ROOT/ , Optional comments
- ACCESS_ESM1-5_r1i1p1f1      , CMIP/ACCESS-ESM1-5/historical/r1i1p1f1              , CMIP6
- BCC-ESM1_r1i1p1f1           , CMIP/BCC-ESM1/historical/r1i1p1f1                   , CMIP6
- CanESM5_r1i1p1f1            , CMIP/CanESM5/historical/r1i1p1f1                    , CMIP6
+ACCESS_ESM1-5_r1i1p1f1      , MODELS/ACCESS-ESM1-5/historical/r1i1p1f1              , CMIP6
+BCC-ESM1_r1i1p1f1           , MODELS/BCC-ESM1/historical/r1i1p1f1                   , CMIP6
+CanESM5_r1i1p1f1            , MODELS/CanESM5/historical/r1i1p1f1                    , CMIP6
 ```
 
 ## Run ILAMB
@@ -209,7 +209,7 @@ The following default PBS file, let's call it `ilamb_test.sh`, can help you to s
 #PBS -l ncpus=14
 #PBS -l mem=63GB           
 #PBS -l jobfs=10GB        
-#PBS -l gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
+#PBS -l storage=gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
 
 # ILAMB is provided through projects hh5 and xp65. We will use the latter here
 # module use /g/data/hh5/public/modules
@@ -217,16 +217,15 @@ The following default PBS file, let's call it `ilamb_test.sh`, can help you to s
 module use /g/data/xp65/public/modules
 module load conda/access-med
 
-# Define the ILAMB Paths
+# Define the ILAMB Path, expecting it to be where you start this job from
 export ILAMB_ROOT=.
-export ILAMB_ROOT=$ILAMB_ROOT_PARENT/ILAMB_ROOT
 export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
-# Run ILAMB in parallel with the config.cfg configure file for the models defined in workshop_version.txt
+# Run ILAMB in parallel with the config.cfg configure file for the models defined in model_setup.txt
 mpiexec -n 10 ilamb-run --config config.cfg --model_setup model_setup.txt --regions global
 ```
 
-You should adjust this file to your own specifications and save it file in the `$ILAMB_ROOT`. Then submit a job to the queue from there via 
+You should adjust this file to your own specifications (including the storage access to your models). Save the file in the `$ILAMB_ROOT` and submit its job to the queue from there via 
 ```
 qsub ilamb_test.sh
 ```
