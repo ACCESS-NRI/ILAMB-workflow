@@ -76,30 +76,43 @@ The module can be loaded as follow:
 >>> module load conda/access-med
 ```
 
-## Configuring ILAMB
+To run `ilamb`, you need to execute the command `ilamb-run` with a number of arguments/files:
+```py
+ilamb-run --config config.cfg --model_setup model_setup.txt --regions global
+```
+
+- `config.cfg` defines which observables and observational datasets will be compared
+- `model_setup.txt` defines the paths of the models that will be compared
+
+Below we explain how to setup the necessary directory structures and the example files mentioned above. For detailed information on the arguments of `ilamb-run`, please consult the official <a href="https://www.ilamb.org/doc/ilamb_run.html" target="_blank">ILAMB documentation</a>.
+
+## ILAMB directory structure
 
 ### ILAMB_ROOT
 
 ILAMB requires files to be organised in a specific directory structure of `DATA` and `MODELS`.
-The root of this directory structure is the `ILAMB_ROOT` path.
+The root of this directory structure is the `ILAMB_ROOT` path (you should export it as `$ILAMB_ROOT`):
+
+```
+export ILAMB_ROOT=PATH/OF/ILAMB_ROOT/DIRECTORY
+```
   
 The following tree represents a typical ILAMB_ROOT setup for CMIP comparison on NCI/Gadi:
 
 ```
-ILAMB_ROOT/
+$ILAMB_ROOT/
 |-- DATA -> /g/data/ct11/access-nri/replicas/ILAMB
 `-- MODELS
     |-- ACCESS-ESM1-5
     |   `-- historical
     |       `-- r1i1p1f1
     |           |-- cSoil.nc -> /g/data/fs38/publications/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Emon/cSoil/gn/latest/cSoil_Emon_ACCESS-ESM1-5_historical_r1i1p1f1_gn_185001-201412.nc
-
 ```
 
 There are two main branches in this directory:
 
 1. the `DATA` directory: this is where we keep the observational datasets each in a subdirectory bearing the name of the variable. This directory can be setup as a symlink to the [ACCESS-NRI Replicated Datasets for Climate Model Evaluation
-](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703)
+](https://geonetwork.nci.org.au/geonetwork/srv/eng/catalog.search#/metadata/f7199_2480_5432_9703).
 
 2. the `MODEL` directory: this directory can be populated with symbolic links to the model outputs.
 
@@ -118,19 +131,27 @@ datasets:
 The tool can then be run from the command line:
 
 ```bash
-ilamb-tree-generator --datasets models.yml --ilamb_root ILAMB_ROOT
+ilamb-tree-generator --datasets models.yml --ilamb_root $ILAMB_ROOT
 ```
 
-### ILAMB configuration file
+Note that you will need to remember the NCI projects that these models are originally situated, as you will need to specify them for computing jobs lateron.
 
-Now that we have the data, we need to setup a `config` file which the ILAMB package will use to initiate a benchmark study.  
+### ILAMB configuration file: `config.cfg`
 
-ILAMB provides [default config files](https://github.com/rubisco-sfa/ILAMB/tree/master/src/ILAMB/data).
+Now that we have the data, we need to setup a configure file which the ILAMB package will use to initiate a benchmark study. With this file, you configure comparison sections and define which variables from which dataset will be compared. You can find more information on adjusting this file on the official <a href="https://www.ilamb.org/doc/first_steps.html#configure-files" target="_blank">ILAMB documentation</a>.
 
-Below we explain both which variables you can define, but start by showing you the minimum setup from the [tutorial's](https://www.ilamb.org/doc/first_steps.html). `sample.cfg` [file](https://github.com/rubisco-sfa/ILAMB/blob/master/src/ILAMB/data/sample.cfg):
-
+An example configure file for ILAMB on <i>Gadi</i> could be called `config.cfg` and look like this for comparing your models with two variables of the radiation and energy cycle as measured by <a href="https://ceres.larc.nasa.gov" target="_blank">Clouds and the Earth’s Radiant Energy System (CERES) project</a>:
 ```
-# This configure file specifies the variables
+# This configure file specifies comparison sections, variables and observational data for running ILAMB on Gadi.
+
+# See https://www.ilamb.org/doc/first_steps.html#configure-files for the ILAMB Tutorial that addesses Configure Files
+
+# Structure:
+# [h1:] Sections
+# [h2:] Variables
+# [...] Observational Datasets and their paths
+
+############################################################################
 
 [h1: Radiation and Energy Cycle]
 
@@ -138,79 +159,79 @@ Below we explain both which variables you can define, but start by showing you t
 variable = "rsus"
 
 [CERES]
-source   = "DATA/rsus/CERES/rsus_0.5x0.5.nc"
+source   = "DATA/rsus/CERESed4.1/rsus.nc"
 
 [h2: Albedo]
 variable = "albedo"
 derived  = "rsus/rsds"
 
 [CERES]
-source   = "DATA/albedo/CERES/albedo_0.5x0.5.nc"
+source   = "DATA/albedo/CERESed4.1/albedo.nc"
 ```
 
-In brief: This file allows you to create different header descriptions of the experiments (`h1`: top level for grouping of variables, `h2`: sub-level for each variable), but most importantly the `variable`s that we will look into and their `source`. In the eaxmple, `rsus` (*Surface Upward Shortwave Radiation*) and `albedo` are the used variables. The latter is actually derived from two variables by dividing the *Surface Upward Shortwave Radiation* by the *Surface Downward Shortwave Radiation*, `derived = rsus/rsds`. Finally, sources are defined as `source` with a text-font header without `h1` or `h2`.
+### ILAMB model selection: `model_setup.txt`
+
+In the `model_setup.txt`, you can select all the model output that you want to compare.
+
+Remember that ILAMB is expecting the model output and its variables to be saved in a specific format. See the above [ILAMB_ROOT/MODELS](#ilamb_rootmodels) description on how to find and create the correct links.
+
+Assuming you want to compare the three models that we used in [ILAMB_ROOT/MODELS](#ilamb_rootmodels) (ACCESS-ESM1.5, BCC-ESM1, and CanESM5), you would need to create a `model_setup.txt` file wehere you define both the model labels and their paths:
+
+```
+# Model Name (used as label), ABSOLUTE/PATH/TO/MODELS or relative to $ILAMB_ROOT/ , Optional comments
+ ACCESS_ESM1-5_r1i1p1f1      , CMIP/ACCESS-ESM1-5/historical/r1i1p1f1              , CMIP6
+ BCC-ESM1_r1i1p1f1           , CMIP/BCC-ESM1/historical/r1i1p1f1                   , CMIP6
+ CanESM5_r1i1p1f1            , CMIP/CanESM5/historical/r1i1p1f1                    , CMIP6
+```
 
 ## Run ILAMB
 
-Now that we have the configuration file set up, you can run the study using the `ilamb-run` script. Executing the following command at the $ILAMB_ROOT directory will run ILAMB as specified in your `sample.cfg` for all models of the `model_root` and all regions (`global`) of the world:
+Now that we have the configuration file set up, you can run the study using the `ilamb-run` script via the aforementioned
 ```
-ilamb-run --config sample.cfg --model_root $ILAMB_ROOT/MODELS/ --regions global
+ilamb-run --config config.cfg --model_setup model_setup.txt --regions global
 ```
-If you are on some institutional resource, you may need to launch the above command using a submission script, or request an interactive node. As the script runs, it will yield output which resembles the following:
-```
-Searching for model results in /Users/ncf/sandbox/ILAMB_sample/MODELS/
 
-                                          CLM40cn
+Because of the computational costs, you need to run ILAMB through a Portable Batch System (PBS) job on Gadi.
 
-Parsing config file sample.cfg...
+### Submitting a PBS job
 
-                   SurfaceUpwardSWRadiation/CERES Initialized
-                                     Albedo/CERES Initialized
+The following default PBS file, let's call it `ilamb_test.sh`, can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
 
-Running model-confrontation pairs...
-
-                   SurfaceUpwardSWRadiation/CERES CLM40cn              Completed  37.3 s
-                                     Albedo/CERES CLM40cn              Completed  44.7 s
-
-Finishing post-processing which requires collectives...
-
-                   SurfaceUpwardSWRadiation/CERES CLM40cn              Completed   3.3 s
-                                     Albedo/CERES CLM40cn              Completed   3.3 s
-
-Completed in  91.8 s
-```
-What happened here? First, the script looks for model results in the directory you specified in the `--model_root` option. It will treat each subdirectory of the specified directory as a separate model result. Here since we only have one such directory, `CLM40cn`, it found that and set it up as a model in the system. Next it parsed the configure file we examined earlier. We see that it found the CERES data source for both variables as we specified it. If the source data was not found or some other problem was encountered, the green `Initialized` will appear as red text which explains what the problem was (most likely `MisplacedData`). If you encounter this error, make sure that `ILAMB_ROOT` is set correctly and that the data really is in the paths you specified in the configure file.
-
-Next we ran all model-confrontation pairs. In our parlance, a confrontation is a benchmark observational dataset and its accompanying analsys. We have two confrontations specified in our configure file and one model, so we have two entries here. If the analysis completed without error, you will see a green `Completed` text appear along with the runtime. Here we see that `albedo` took a few seconds longer than `rsus`, presumably because we had the additional burden of reading in two datasets and combining them.
-
-The next stage is the post-processing. This is done as a separate loop to exploit some parallelism. All the work in a model-confrontation pair is purely local to the pair. Yet plotting results on the same scale implies that we know the maxmimum and minimum values from all models and thus requires the communcation of this information. Here, as we are plotting only over the globe and not extra regions, the plotting occurs quickly.
-
-### Submitting a job using PBS
-
-The following default PBS file, let's call it `ilamb_test.sh` can help you to setup your own, while making sure to use the correct project (#PBS -P) to charge your computing cost to:
 ```
 #!/bin/bash
 
-#PBS -N NAME-OF-YOUR-JOB
-#PBS -P COMPUTATIONAL-RESOURCE-GROUP
-#PBS -q QUEUE-TO-RUN-JOB-IN
-#PBS -l ncpus=CPU-LIMIT
-#PBS -l mem=MEMORY-LIMIT           
-#PBS -l jobfs=LOCA-DOSK        
-#PBS -l walltime=TIME-LIMIT  
-#PBS -l storage=GROUP-YOU-WILL-ACCESS-IN-THIS-JOB
+# For help with PBS directives on Gadi, go to https://opus.nci.org.au/display/Help/PBS+Directives+Explained
+#PBS -N ilamb_test
 #PBS -l wd
+#PBS -P your_compute_project_here
+#PBS -q normalbw
+#PBS -l walltime=0:20:00  
+#PBS -l ncpus=14
+#PBS -l mem=63GB           
+#PBS -l jobfs=10GB        
+#PBS -l gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
 
+# ILAMB is provided through projects hh5 and xp65. We will use the latter here
+# module use /g/data/hh5/public/modules
+# module load conda
 module use /g/data/xp65/public/modules
 module load conda/access-med
 
-export ILAMB_ROOT=$PWD/ILAMB_ROOT
+# Define the ILAMB Paths
+export ILAMB_ROOT=.
+export ILAMB_ROOT=$ILAMB_ROOT_PARENT/ILAMB_ROOT
 export CARTOPY_DATA_DIR=/g/data/xp65/public/apps/cartopy-data
 
-ilamb-run --config cmip.cfg --model_setup $PWD/modelroute.txt --regions global
+# Run ILAMB in parallel with the config.cfg configure file for the models defined in workshop_version.txt
+mpiexec -n 10 ilamb-run --config config.cfg --model_setup model_setup.txt --regions global
 ```
 
-If you are not familiar with PBS jobs on NCI, you could find the guide [here](https://opus.nci.org.au/display/Help/4.+PBS+Jobs). In brief: this PBS script (which you can submit via the bash command `qsub ilamb_test.sh`), will submit a job to Gadi with the job name (#PBS -N) *default_ilamb* under project (#PBS -P) `tm70` with a normal queue (#PBS -q normalbw), for 1 CPU (#PBS -l ncpus=1) with 32 GB RAM (#PBS -l mem=32GB), with an walltime of 10 hours and access to 10 GB local disk space (#PBS -l jobfs=10GB) as well as data storage access to projects `xp65`, `nf33`, and `fs38` (again, note that you have to be [member of both projects on NCI](https://my.nci.org.au/mancini/project-search). Upon starting the job, it will change into to the working directory that you started the job from (#PBS -l wd) and load the access-med conda environment. Finally, it will export the $ILAMB_ROOT as well as $ARTOPY_DATA_DIR paths and start an `ilamb-run`.
+You should adjust this file to your own specifications and save it file in the `$ILAMB_ROOT`. Then submit a job to the queue from there via 
+```
+qsub ilamb_test.sh
+```
+
+Running this job will create a `_build` directory with the comparison results within `$ILAMB_ROOT`. You can adjust the place of this directory via a agrument `--build_dir` argument for `ilamb-run`.
 
 ## Visualisation of ILAMB outputs
 
