@@ -285,9 +285,7 @@ http://0.0.0.0:8000/
 
 For our `config.cfg` example we expect to see the following website (which shows the available observational data in blue after clicking on <i>Albedo</i> and <i>Surface Upward SW Radiation</i>):
 
-<p align="center">
-<img src="image/vdi_window1.png" width="50%">
-</p>
+![](./image/vdi_window1.png)
 
 Clicking on `CERESed4.1` under the `Albedo` measurements then opens a new tab which allows you to browse through more extended and quantitative comparisons of your selected Models when confronted with measurements from the <a href="https://ceres.larc.nasa.gov" target="_blank">Clouds and the Earth’s Radiant Energy System (CERES) project</a>:
 
@@ -297,11 +295,15 @@ Clicking on `CERESed4.1` under the `Albedo` measurements then opens a new tab wh
 
 The Jupyter interface available via ARE can also be used to visualise the outputs of ILAMB.
 
-## Advanced usages                                                                                                 
+## Advanced usages
 
-### Changing configure file variables
+The analysis with ILAMB can be adjusted in many ways. We suggest to read the ILAMB documentation and <a href="https://www.ilamb.org/doc/ilamb_run.html" target="_blank">tutorials</a> for a complete overview, as we only showcase a few examples below. 
 
-This is the list of all the variables you can modify in config file:
+### Changing configure file definitions
+
+You can find more information on adjusting this file on the official <a href="https://www.ilamb.org/doc/first_steps.html#configure-files" target="_blank">ILAMB documentation</a>.
+
+Below we provide a list of definitions you can modify in config file:
 ```
 source              = None
 #Full path to the observational dataset
@@ -356,25 +358,31 @@ weight              = 1
 
 ```
 
-### Set up `modelroute` and `regions` files
+### Model selection via `--model_setup` or `--model_root`
 
-If you plan to run only a specific subset of models, you can already define them in a `modelroute.txt` file. It could look like our specific example for running different versions (1, 2, and 3) of the ACCESS-ESM 1.5 suite:
+In the above examples, we already showed you how select only a few examples of the available models, which are selected with a file (e.g. `model_setup.txt`) that is used via the `--model_setup` argument.
 
+You can, however, also select all models, by simply using the keyword `--model_root $ILAMB_ROOT/MODELS/`.
+
+### Run specific regions via the `--regions` argument
+
+In the above examples, we have always chosen to perform comparisons on a `global` level.
+
+You can, however, also choose other predefined regions like `aust` (for Australia) based on the <a href="http://www.globalfiredata.org" target="_blank">Global Fire Emissions Database</a> or define your own regions. To run ILAMB for several regions, use the `--regions` option and include the region labels delimited by spaces, e.g. `--regions global aust`
+
+To use your own region, you need to create a new file, for example `regions.txt` with latidude and longitude limits for your regions:
 ```
-# Model Name                    , PATH/TO/MODELS  , EXTRA COMMANDS
-ACCESS_ESM1-5-r1i1p1f1          , MODELS/r1i1p1f1 , CMIP6
-ACCESS_ESM1-5-r2i1p1f1          , MODELS/r2i1p1f1 , CMIP6
-ACCESS_ESM1-5-r3i1p1f1          , MODELS/r3i1p1f1 , CMIP6
-... (abbreviated)
+#label, name      , lat_min, lat_max, lon_min, lon_max
+aust  , Australia , -41.25 , -10.50 , 112.00 , 154.00
 ```
 
-### Run specific models and regions
+You can then use them with the argument `--regions regions.txt`
 
-As mentioned in [Section 4.3](#set-up-modelroute-and-regions-files), you can adjust the models and regions that ILAMB will run on. You can find more information in the [ILAMB tutorial](https://www.ilamb.org/doc/ilamb_run.html). Calling `ilamb-run` with both specifications, would look like:
-```
-ilamb-run --config cmip.cfg --model_setup modelroute.txt --regions regions.txt
-```
-where you call a specific config file (see [Section 4.2](#set-up-a-config-file)) as well as specific model routes and regions with files (see [Section 4.3](#set-up-modelroute-and-regions-files)).
+An Australia-focussed ILAMB run with the same setup as above, would for example produce the following comparisons for ACCESS-ESM1.5 when confronted with albedo measurements of CERES:
+
+![](./image/ilamb_australia.png)
+
+For even more detailed region definitions, you can follow the <a href="https://www.ilamb.org/doc/custom_regions.html" target="_blank">ILAMB tutorial for custom regions</a>.
 
 ### Fix your setup with `ilamb_doctor`
 
