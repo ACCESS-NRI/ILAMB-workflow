@@ -286,7 +286,7 @@ http://0.0.0.0:8000/
 For our `config.cfg` example we expect to see the following website (which shows the available observational data in blue after clicking on <i>Albedo</i> and <i>Surface Upward SW Radiation</i>):
 
 <p align="center">
-<img src="./image/vdi_window1.png" width="50%">
+<img src="image/vdi_window1.png" width="50%">
 </p>
 
 Clicking on `CERESed4.1` under the `Albedo` measurements then opens a new tab which allows you to browse through more extended and quantitative comparisons of your selected Models when confronted with measurements from the <a href="https://ceres.larc.nasa.gov" target="_blank">Clouds and the Earth’s Radiant Energy System (CERES) project</a>:
