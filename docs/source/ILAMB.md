@@ -370,15 +370,13 @@ In the above examples, we have always chosen to perform comparisons on a `global
 
 You can, however, also choose other predefined regions like `aust` (for Australia) based on the <a href="http://www.globalfiredata.org" target="_blank">Global Fire Emissions Database</a> or define your own regions. To run ILAMB for several regions, use the `--regions` option and include the region labels delimited by spaces, e.g. `--regions global aust`
 
-To use your own region, you need to create a new file, for example `regions.txt` with latidude and longitude limits for your regions:
+To use your own region, you need to create a new file, for example `regions.txt` with latidude and longitude limits for your regions and use it with the argument `--regions regions.txt`. This could be advisable if you want to include Tasmania (latitudes down to -43.75 degrees) into your comparisons for Australia, which is currently excluded from the default ILAMB `aust` definition (cutoff at -41.25 degress following the definition of the Global Fire Emissions Database):
 ```
-#label, name      , lat_min, lat_max, lon_min, lon_max
-aust  , Australia , -41.25 , -10.50 , 112.00 , 154.00
+#label, name                         , lat_min, lat_max, lon_min, lon_max
+au_tas, Australia including Tasmania , -43.75 , -10.50 , 112.00 , 154.00
 ```
 
-You can then use them with the argument `--regions regions.txt`
-
-An Australia-focussed ILAMB run with the same setup as above, would for example produce the following comparisons for ACCESS-ESM1.5 when confronted with albedo measurements of CERES:
+An Australia-focussed ILAMB run with the same setup as above and default `aust` region, would for example produce the following comparisons for ACCESS-ESM1.5 when confronted with albedo measurements of CERES:
 
 ![](./image/ilamb_australia.png)
 
