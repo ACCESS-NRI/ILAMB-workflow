@@ -1,16 +1,14 @@
-# ILAMB-workflow
+# ACCESS-NRI support for ILAMB at NCI
 
 [![Docs Status](https://readthedocs.org/projects/ilamb-workflow/badge/?version=latest)](https://ilamb-workflow.readthedocs.io/en/latest/?badge=latest)
 
+This repository is used to maintain the [International Land Model Benchmarking (ILAMB)](https://www.ilamb.org) and International Ocean Model Benchmarking (IOMB) model evaluation tools on NCI infrastracture.
 
-![example workflow](https://github.com/ACCESS-NRI/ILAMB-workflow/actions/workflows/ilamb_fetch.yml/badge.svg)
+The documentation provided [here](https://ilamb-workflow.readthedocs.io/) is designed to supplement, rather than replace, the official [ILAMB documentation](https://www.ilamb.org/doc/). This documentation is tailored to using the tool within the NCI infrastructure. We encourage users to read the ILAMB documentation and to
+try on the [ILAMB Tutorial](https://www.ilamb.org/doc/tutorial.html).
 
-![example workflow](https://github.com/ACCESS-NRI/ILAMB-workflow/actions/workflows/iomb_fetch.yml/badge.svg)
+ILAMB development is primarily performed by the [RUBISCO](https://www.bgc-feedbacks.org/) Science Focus Area and supported by the [RGMA](https://climatemodeling.science.energy.gov/program-area/regional-global-model-analysis) Activity of the [EESSD](https://science.osti.gov/ber/Research/eessd) division of the [BER](https://science.osti.gov/ber) program in the United States Department of Energy's Office of Science.
 
-[build_al33](http://130.56.247.78/build_al33/index.html)
+### How to cite ILAMB?
 
-[build_oi10_2](http://130.56.247.78/build_oi10_2/index.html)
-
-[build_rr3](http://130.56.247.78/build_rr3/index.html)
-
-[build_iomb](http://130.56.247.78/build_iomb/index.html)
+*Collier, N., Hoffman, F. M., Lawrence, D. M., Keppel-Aleks, G., Koven, C. D., Riley, W. J., et al. (2018). The International Land Model Benchmarking (ILAMB) system: Design, theory, and implementation. Journal of Advances in Modeling Earth Systems, 10, 2731–2754. https://doi.org/10.1029/2018MS001354*
