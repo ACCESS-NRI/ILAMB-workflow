@@ -357,7 +357,101 @@ weight              = 1
 # if a dataset has no weight specified, it is implicitly 1
 
 ```
+Above are the general attributes you can use in config file. However, `ILAMB` has develop many sub-classes of Confrontation for some specific case, there are some specific attribute in those sub-classes:
+```
+--ConfCO2:
 
+emulated_flux       = nbp    
+# prety much the same as 'derived', default is nbp in this case
+
+sites               = None
+# in this confrontation, it will use site data instead of space data, this attribute is to specify which sites will be used.
+
+force_emulation     = False
+# if switch to true, using emulated_flux variable even you have co2 in model-result.
+
+never_emulation     = False
+# is switch to true, only use co2 in confront even if you specify emulated_flux and dont have co2 in model_result
+
+lat_bands           = "-90,-60,-23,0,+23,+60,+90"
+# it will give a latitude boundary for sites to separate those sites into interval.
+
+--ConfGSNF:
+
+model_flux          = "nee"
+# use one variable or derive of some variables to replace the target variable in model_result. It's quite useful if you don't have the variable required by this confrontation in your model_result.
+
+--ConfNBP:
+
+skip_taylor         = "False"
+# skip Temporal distribution in program
+
+--ConfSoilCarbon:
+
+soilc_source        = None
+# path to observational dataset of 'solic'.
+
+npp_source          = None
+# path to observational dataset of 'npp'.
+
+tas_source          = None
+# path to observational dataset of 'tas'.
+
+pr_source           = None
+# path to observational dataset of 'pr'.
+
+pet_source          = None
+# path to observational dataset of 'pet'
+
+fracpeat_source     = None
+# path to observational dataset of 'fracpeat'
+
+y0                  = 1980.0
+# start year
+
+yf                  = 2006.0
+# end year
+
+--ConfEvapFraction:
+
+hfss_source         =None (*)
+# path to observational dataset of 'hfss'
+
+hfls_source         =None (*)
+# path to observational dataset of 'hlss'
+
+#caution: those two variable is conpulsory if you specify ctype = 'ConfEvapFraction'
+
+--ConfTWSA:
+
+nbasins             = 30
+# Adding a member variable called basins, add them as regions
+
+--ConfPermafrost
+
+y0                  = 1985.0
+# start year
+
+yf                  = 2005.0
+# end year
+
+dmax                = 3.5
+# The maximum depth to consider in [m]
+
+Teps                = 273.15
+# The temperature threshold to use to indicate permafrost [K]
+
+--ConfAlbedo:
+
+energy_threshold    = 10
+# engery threshold to build a mask
+
+skip_weighting      = False
+# options while run the mean state analysis
+
+skip_cycle          = False
+# options while run the mean state analysis
+```
 ### Model selection via `--model_setup` or `--model_root`
 
 In the above examples, we already showed you how select only a few examples of the available models, which are selected with a file (e.g. `model_setup.txt`) that is used via the `--model_setup` argument.
