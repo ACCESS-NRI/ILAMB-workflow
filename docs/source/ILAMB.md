@@ -27,7 +27,7 @@ We examine the performance of historical simulations from a selection of coupled
 This land-focused study includes coupled model results for the historical experiment from the CMIP6 era. We also use this as a testing ground to include new datasets and additional models. If you have a suggestion of a reference dataset or would like to request we include a model, please raise an issue.
 ![](./image/ilamb_cmip6.png)
 
-[Land Comparison of Offline CMIP6 Models](http://130.56.247.78/build_r33/index.html)
+[Land Comparison of Offline CMIP6 Models](http://130.56.247.78/build_rr3/index.html)
 We examine performance differences among a selection of land models (CLM, ISBA-CTRIP, and JSBACH) run using different forcings (GSWP3, CRUJRA, and Princeton).
 ![](./image/ilamb_landhist.png)
 
