@@ -414,10 +414,10 @@ yf                  = 2006.0
 
 --ConfEvapFraction:
 
-hfss_source         =None (*)
+hfss_source         = None (*)
 # path to observational dataset of 'hfss'
 
-hfls_source         =None (*)
+hfls_source         = None (*)
 # path to observational dataset of 'hlss'
 
 #caution: those two variable is conpulsory if you specify ctype = 'ConfEvapFraction'
