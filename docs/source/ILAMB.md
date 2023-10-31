@@ -528,6 +528,7 @@ Then you need to copy or build softlink of all the subdirectory and `scalar_data
 
 then cd to `dist` and build your localhost there with command:
 ```
+cd ./dist
 python3 -m http.server
 ```
 
