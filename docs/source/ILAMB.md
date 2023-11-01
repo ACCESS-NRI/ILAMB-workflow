@@ -533,3 +533,112 @@ python3 -m http.server
 ```
 
 and you will see your ilamb result been deployed by LMT.
+
+### Specific explaination for use `IOMB` to evaluate `ACCESS-OM2` raw data
+
+International Ocean Model Benchmarking (IOMB) is a model evaluation tool for Ocean model, it based on `ILAMB` and has the same way to use. Basecally `IOMB` and `ILAMB` are share the core procedure difference is different variables and observational dataset to compare with and different config file.
+
+Since `IOMB` can not read the raw data of `ACCESS-OM2`, we will introduce a new tool to help people to CMORise non-cmip data.
+
+#### ACCESS Post-Processor v4
+ACCESS Post-Processor v4(APP4) is a is a CMORisation tool designed to convert ACCESS model output to ESGF-compliant formats, primarily for publication to CMIP6. It uses CMOR3 and the CMIP6 data request to generate CF-compliant files according to the CMIP6 data standards.
+
+#### install APP4
+[Github repo of APP4](https://github.com/ACCESS-Hive/APP4), clone this repo to your local disk
+```
+git clone https://github.com/ACCESS-Hive/APP4.git
+```
+
+#### setup APP4
+After you clone the repo, you will find the repo structure like this:
+```
+.
+├── CITATION.cff
+├── LICENCE.txt
+├── README.md
+├── check_app4.sh
+├── custom_app4.sh
+├── input_files
+│   ├── ccmi-2022
+│   ├── cmip6-cmor-tables
+│   ├── cmip6_pub_env.yml
+│   ├── custom_mode_cmor-tables
+│   ├── dreq
+│   ├── experiments.csv
+│   ├── grids.csv
+│   ├── grids_om2-025.csv
+│   ├── grids_om2.csv
+│   ├── json
+│   ├── master_map.csv
+│   ├── master_map_ccmi2022.csv
+│   ├── master_map_om2.csv
+│   └── var_subset_lists
+├── multiwrap_app4.sh
+├── multiwrap_qc4.sh
+├── production_app4.sh
+├── production_qc4.sh
+└── subroutines
+    ├── app.py
+    ├── app.pyc
+    ├── app_functions.py
+    ├── app_functions.pyc
+    ├── app_wrapper.py
+    ├── cleanup.sh
+    ├── completion_check.py
+    ├── custom_json_editor.py
+    ├── database_manager.py
+    ├── deprecated
+    ├── dreq_mapping.py
+    ├── qcfigs_index.py
+    ├── quality_check.py
+    └── setup_env.sh
+```
+for `IOMB` we only need some Ocean variables, so first step we need to specify which variable we want.
+so we go to `./input_files/var_subset_lists` and create a new `.txt` file
+```
+cd ./input_files/var_subset_lists
+touch IOMB_variable.txt
+```
+in this new `.txt` file, we could specify `frequency,variable`
+```
+Omon,chl
+Omon,o2
+Omon,no3
+Omon,po4
+Omon,talk
+Omon,dissic
+Omon,mlotst
+Omon,thetao
+Omon,so
+```
+Next step is to change some user options in `custom_app4.sh`
+
+You can define those options based on what you need follow the instruction, here we just provide an example for `IOMB`
+
+To get variables, you can specify attributes like below
+```
+DATA_LOC=/g/data/p73/archive/non-CMIP/ACCESS-ESM1_5/
+EXP_TO_PROCESS=                               # local name of experiment
+VERSION=ESM                                   # select one of: [CM2, ESM, OM2[-025]]
+START_YEAR=1850                               # internal year to begin CMORisation
+END_YEAR=2014                                 # internal year to end CMORisation (inclusive)
+
+VAR_SUBSET=true
+VAR_SUBSET_LIST=input_files/var_subset_lists/IOMB_variable.txt
+
+OUTPUT_LOC=/scratch/$PROJECT/$USER/APP4_output 
+PROJECT=$PROJECT                              # NCI project to charge compute; $PROJECT = your default project
+ADDPROJS=( p73 p66 )                          # additional NCI projects to be included in the storage flags
+QUEUE=hugemem                                 # NCI queue to use; hugemem is recommended
+MEM_PER_CPU=24                                # memory (GB) per CPU (recommended: 24 for daily/monthly; 48 for subdaily)                    
+```
+
+After you get everything done, run `custom_app4.sh`
+```
+bash custom_app4.sh
+```
+then you will get CF-compliant netCDF files in `OUTPUT_LOC`
+
+
+
+
