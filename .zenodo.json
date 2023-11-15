@@ -1,0 +1,26 @@
+{
+    "creators": [
+        {
+            "orcid": "",
+            "affiliation": "ACCESS-NRI",
+            "name": "Beucher, Romain"
+        },
+        {
+            "orcid": "",
+            "affiliation": "ACCESS-NRI",
+            "name": "Zeng, Rhaegar"
+        }
+    ],
+
+    "license": "Apache-2.0",
+
+    "title": "ACCESS-NRI ILAMB Workflow support at NCI",
+
+    "keywords": ["Climate", "Science", "Model Evaluation", "ILAMB", "ACCESS-NRI", "NCI"],
+
+    "communities": [
+        {"identifier": "access-nri"}
+    ],
+
+    "grants": [{"id":""}]
+}
