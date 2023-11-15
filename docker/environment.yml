@@ -1,0 +1,9 @@
+---
+name: ilamb
+channels:
+  - conda-forge
+  - accessnri
+
+dependencies:
+  - python >=3.9
+  - ilamb
