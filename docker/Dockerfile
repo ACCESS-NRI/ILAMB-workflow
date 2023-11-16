@@ -9,4 +9,4 @@ RUN mamba update -y conda mamba pip && mamba env create --name ilamb --file envi
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "--name", "ilamb", "/bin/bash", "-c"]
 
-ENTRYPOINT ["conda", "run", "--name", "ilamb", "ilamb-run"]
+ENTRYPOINT ["conda", "run", "--name", "ilamb"]
