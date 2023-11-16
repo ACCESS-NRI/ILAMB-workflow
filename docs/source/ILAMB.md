@@ -73,7 +73,7 @@ For NCI users, ACCESS-NRI is providing a conda environment with the latest versi
 To load the module via project `xp65`, you need to prompt:
 ```
 >>> module use /g/data/xp65/public/modules
->>> module load conda/access-med
+>>> module load ilamb
 ```
 For `hh5`, you need to use:
 ```
