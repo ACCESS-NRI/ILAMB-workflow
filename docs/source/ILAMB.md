@@ -438,6 +438,55 @@ The Jupyter interface available via ARE can also be used to visualise the output
   </tr>
 </tbody></table>
 
+## IOMB-DATA list
+
+<table>
+  <tbody><tr>
+    <td>Alkalinity</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/talk.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Anthropogenic DIC 1994-2007</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/Gruber/Gruber.nc">Gruber</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/OCIM/OCIM.nc">OCIM</a></td>
+  </tr>
+  <tr>
+    <td>Chlorophyll</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/chla.nc">GLODAP2.2022</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/SeaWIFS/SeaWIFS.nc">SeaWIFS</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/MODISAqua/MODISAqua.nc">MODISAqua</a></td>
+  </tr>
+  <tr>
+    <td>Dissolved Inorganic Carbon</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/dissic.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Nitrate</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/no3.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/no3.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Oxygen</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/o2.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/o2.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Phosphate</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/po4.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/po4.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Salinity</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/so.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/so.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Silicate</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/sio3.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/sio3.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Temperature</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/thetao.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/thetao.nc">GLODAP2.2022</a></td>
+  </tr>
+  <tr>
+    <td>Vertical Temperature Gradient</td>
+    <td><a href="https://www.ilamb.org/IOMB-Data/DATA/WOA2018/thetao.nc">WOA2018</a>, <a href="https://www.ilamb.org/IOMB-Data/DATA/GLODAP2.2022/thetao.nc">GLODAP2.2022</a></td>
+  </tr>
+</tbody></table>
+
 ## Advanced usages
 
 The analysis with ILAMB can be adjusted in many ways. We suggest to read the ILAMB documentation and <a href="https://www.ilamb.org/doc/ilamb_run.html" target="_blank">tutorials</a> for a complete overview, as we only showcase a few examples below. 
