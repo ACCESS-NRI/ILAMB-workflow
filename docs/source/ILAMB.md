@@ -830,6 +830,36 @@ bash custom_app4.sh
 ```
 then you will get CF-compliant netCDF files in `OUTPUT_LOC`
 
+### Cmoriser for ilamb
+
+We have build a ACCESS raw data Cmoriser for ilamb, that means users can use ACCESS raw data to run ilamb without any additional cmorise pre-process.
+
+##### Usage of cmoriser
+
+We make this cmoriser as a part of `ilamb-tree-generator`, so the usage is very similar to `ilamb-tree-generator`.
+
+First, we need a `.yml` file to contain metadatas which `ilamb-tree-generator`, there is an example:
+
+```
+    datasets:
+    - {mip: CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
+    
+    - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: HI-CN-05,}
+```
+
+This example include two datasets, first one is a cmip dataset, which is the origin way to use `ilamb-tree-generator`. The second dataset is an ACCESS raw output which is a non-cmip dataset, most parts are the same but with some special parameters for non-cmip dataset only, following are the detail of each parameters:
+
+```
+mip: 
+    need to be non-cmip to trigger the cmoriser for non-cmip data.
+
+path:
+    For people who want to use there own ACCESS raw data, you can speciy your data root there, otherwise it will automatically use data in `p73` 
+```
+
+After you finish set up the `config.yml` file, trigger the `ilamb-tree-generator`, then you will get your cmorised data in a DRS which ilamb can read.
+
+
 
 
 
