@@ -857,7 +857,7 @@ path:
     For people who want to use there own ACCESS raw data, you can speciy your data root there, otherwise it will automatically use data in `p73` 
 ```
 
-After you finish set up the `config.yml` file, trigger the `ilamb-tree-generator`, then you will get your cmorised data in a DRS which ilamb can read.
+After you finish set up the `config.yml` file, trigger the `ilamb-tree-generator`, then you will get your cmorised data in `ILAMB-ROOT` which ilamb can read.
 
 
 
