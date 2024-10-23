@@ -836,7 +836,7 @@ We have developed a CMORiser for ACCESS raw data specifically for ILAMB. This al
 
 ##### Usage of cmoriser
 
-We make this cmoriser as a part of `ilamb-tree-generator`, so the usage is very similar to `ilamb-tree-generator`.
+We've integrated this CMORiser into the ilamb-tree-generator package, making its usage very similar to that of ilamb-tree-generator. This streamlines the configuration of ILAMB for evaluating ACCESS model data.```
 
 First, we need a `.yml` file to contain metadatas which `ilamb-tree-generator`, there is an example:
 
