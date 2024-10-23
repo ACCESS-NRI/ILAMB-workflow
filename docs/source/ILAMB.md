@@ -832,7 +832,7 @@ then you will get CF-compliant netCDF files in `OUTPUT_LOC`
 
 ### Cmoriser for ilamb
 
-We have build a ACCESS raw data Cmoriser for ilamb, that means users can use ACCESS raw data to run ilamb without any additional cmorise pre-process.
+We have developed a CMORiser for ACCESS raw data specifically for ILAMB. This allows users to run ILAMB directly with ACCESS raw data, eliminating the need for any additional CMORise pre-processing steps.
 
 ##### Usage of cmoriser
 
