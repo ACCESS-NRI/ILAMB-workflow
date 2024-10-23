@@ -838,27 +838,7 @@ We have developed a CMORiser for ACCESS raw data specifically for ILAMB. This al
 
 We've integrated this CMORiser into the ilamb-tree-generator package, making its usage very similar to that of ilamb-tree-generator. This streamlines the configuration of ILAMB for evaluating ACCESS model data.```
 
-First, we need a `.yml` file to contain metadatas which `ilamb-tree-generator`, there is an example:
-
-```
-    datasets:
-    - {mip: CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
-    
-    - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: HI-CN-05,}
-```
-
-This example include two datasets, first one is a cmip dataset, which is the origin way to use `ilamb-tree-generator`. The second dataset is an ACCESS raw output which is a non-cmip dataset, most parts are the same but with some special parameters for non-cmip dataset only, following are the detail of each parameters:
-
-```
-mip: 
-    need to be non-cmip to trigger the cmoriser for non-cmip data.
-
-path:
-    For people who want to use there own ACCESS raw data, you can speciy your data root there, otherwise it will automatically use data in `p73` 
-```
-
-After you finish set up the `config.yml` file, trigger the `ilamb-tree-generator`, then you will get your cmorised data in `ILAMB-ROOT` which ilamb can read.
-
+"First, you will need a `.yml` file to store the metadata required by `ilamb-tree-generator`. Here's an example:
 
 
 
