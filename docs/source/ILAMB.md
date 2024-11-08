@@ -830,6 +830,66 @@ bash custom_app4.sh
 ```
 then you will get CF-compliant netCDF files in `OUTPUT_LOC`
 
+### Cmoriser for ilamb
+
+We have developed a CMORiser for ACCESS raw data specifically for ILAMB. This allows users to run ILAMB directly with ACCESS raw data, eliminating the need for any additional CMORise pre-processing steps.
+
+##### Usage of cmoriser
+
+We've integrated this CMORiser into the ilamb-tree-generator package, making its usage very similar to that of ilamb-tree-generator. This streamlines the configuration of ILAMB for evaluating ACCESS model data.```
+
+"First, you will need a `.yml` file to store the metadata required by `ilamb-tree-generator`. Here's an example:
+
+```yaml
+datasets:
+    - {mip: CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: historical, ensemble: r1i1p1f1}
+    - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-5, project: CMIP6, exp: HI-CN-05}
+```
+
+The first entry represents a CMIP dataset, which is the standard usage for `ilamb-tree-generator`. The second entry corresponds to an ACCESS raw output, which is a non-CMIP dataset. Although most parameters are similar, there are specific settings for non-CMIP datasets. Here are the details of each parameter:
+
+- `mip`: Set to `non-CMIP` to activate the CMORiser for non-CMIP data.
+- `path`: For users working with their own ACCESS raw data, specify the root directory here. If not provided, the tool will default to using data in the `p73` directory.
+
+### run `ilamb-tree-generator`
+
+After setting up the `config.yml` file, run the `ilamb-tree-generator`. This will generate the CMORized data within the `ILAMB-ROOT` directory, making it accessible for ILAMB to read and use:
+
+```bash
+ilamb-tree-generator --datasets {your-config.yml-file} --ilamb_root $ILAMB_ROOT
+```
+
+Once it finish, you will get your CMORised data been stored by variable names in this format:
+
+```bash
+.
+├── DATA
+└── MODELS
+    └── ACCESS-ESM1-5
+        └── HI-CN-05
+            ├── cSoil.nc
+            ├── cVeg.nc
+            ├── evspsbl.nc
+            ├── gpp.nc
+            ├── hfls.nc
+            ├── hfss.nc
+            ├── hurs.nc
+            ├── lai.nc
+            ├── nbp.nc
+            ├── pr.nc
+            ├── ra.nc
+            ├── rh.nc
+            ├── rlds.nc
+            ├── rlus.nc
+            ├── rsds.nc
+            ├── rsus.nc
+            ├── tasmax.nc
+            ├── tasmin.nc
+            ├── tas.nc
+            └── tsl.nc
+```
+
+
 
 
 
