@@ -1,6 +1,7 @@
 # ACCESS-NRI support for ILAMB at NCI
 
 [![Docs Status](https://readthedocs.org/projects/ilamb-workflow/badge/?version=latest)](https://ilamb-workflow.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/608906925.svg)](https://doi.org/10.5281/zenodo.14183928)
 
 This repository is used to maintain the [International Land Model Benchmarking (ILAMB)](https://www.ilamb.org) and International Ocean Model Benchmarking (IOMB) model evaluation tools on NCI infrastracture.
 
