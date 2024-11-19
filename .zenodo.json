@@ -20,7 +20,6 @@
 
     "communities": [
         {"identifier": "access-nri"}
-    ],
+    ]
 
-    "grants": [{"id":""}]
 }
