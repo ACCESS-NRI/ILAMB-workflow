@@ -59,25 +59,19 @@ Here we list the NCI collections required to run the CMIP confrontations example
 |   CSIRO-Mk3-6-0 model output prepared for CMIP5  | rr3 [join](https://my.nci.org.au/mancini/project/rr3/join) |   N/A |
 |    Earth System Grid Federation (ESGF) Replicated CMIP5-era Datasets  | al33 [join](https://my.nci.org.au/mancini/project/al33/join) |   [10.25914/5b98b0f5ef29d](https://dx.doi.org/10.25914/5b98b0f5ef29d)|
 
-Projects for data analysis (choose one):
+Project for data analysis:
 
 | Project Name   | Project Code  |
 | :-:            | :-:           |
-| ACCESS MED Analysis Environments | xp65 [join](https://my.nci.org.au/mancini/project/xp65/join) |
-| CLEX Analysis Environments | h55 [join](https://my.nci.org.au/mancini/project/hh5/join) |
+| ACCESS Analysis Environments | xp65 [join](https://my.nci.org.au/mancini/project/xp65/join) |
 
 ## ILAMB on NCI-Gadi
 
-For NCI users, ACCESS-NRI is providing a conda environment with the latest version of ILAMB through project `xp65`. It is also provided through the CLEX analysis environment project `hh5`.
+For NCI users, ACCESS-NRI is providing a conda environment with the latest version of ILAMB through project `xp65`.
 
 To load the module via project `xp65`, you need to prompt:
 ```
 >>> module use /g/data/xp65/public/modules
->>> module load conda/access-med
-```
-For `hh5`, you need to use:
-```
->>> module use /g/data/hh5/public/modules
 >>> module load conda/analysis3
 ```
 
@@ -214,13 +208,11 @@ The following default PBS file, let's call it `ilamb_test.job`, can help you to 
 #PBS -l ncpus=14
 #PBS -l mem=63GB           
 #PBS -l jobfs=10GB        
-#PBS -l storage=gdata/ct11+gdata/hh5+gdata/xp65+gdata/fs38+gdata/oi10
+#PBS -l storage=gdata/ct11+gdata/xp65+gdata/fs38+gdata/oi10
 
-# ILAMB is provided through projects xp65 and hh5. We will use the latter here
+# ILAMB is provided through projects xp65. We will use the latter here
 #module use /g/data/xp65/public/modules
-#module load conda/access-med
-module use /g/data/hh5/public/modules
-module load conda/analysis3
+#module load conda/analysis3
 
 # Define the ILAMB Path, expecting it to be where you start this job from
 export ILAMB_ROOT=./
