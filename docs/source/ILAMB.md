@@ -880,8 +880,122 @@ Once it finish, you will get your CMORised data been stored by variable names in
             ├── tas.nc
             └── tsl.nc
 ```
+### New Version of `ilamb-tree-genertor` for ESM1_6
 
+This notebook is a simple tutorial to demonstrate how to use the updated `ilamb-tree-generator` on **Gadi** to process raw **ESM1_6** data.
 
+The purpose of this new version is to **cmorise** raw output from the ESM1_6 model in order to make it compatible with **ILAMB's input requirements**. 
 
+Currently, the tool only supports the following variables:
 
+Emon:
+```python
+'cSoil'
+```
+Lmon:
+```python
+'cVeg','gpp','lai','nbp','ra','rh','tsl'
+```
+Amon:
+```python
+'evspsbl','hfls','hfss','hurs','pr','rlds','rlus','rsds','rsus','tasmax','tasmin','tas'
+```
+#### Step1: Load the Module
 
+`ilamb-tree-generator` has already been deployed as a module under the xp65 group. Gadi users can load the module directly to use it.
+
+```bash
+module use /g/data/xp65/public/modules
+module load conda/analysis3
+```
+
+#### Step2: Prepare a `.yml` file for metadata
+
+you will need a .yml file to store the metadata required by ilamb-tree-generator. Here’s an example:
+
+```yaml
+datasets:
+ - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-6, project: CMIP6, path: /scratch/p66/pjb581/access-esm/archive/pi_concentrations-expt-c55f7217, output_range: [900,910]}
+ - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-6, project: CMIP6, path: /scratch/p66/pjb581/access-esm/archive/pi_concentrations-expt-c55f7217, output: 800}
+```
+
+#### Reused Attributes
+
+For the attributes `mip`, `institute`, `dataset`, and `project`, simply copy the values from the example above. These fields remain unchanged and have already been explained in previous versions of the tool.
+
+---
+
+#### New Attributes for ESM1_6 Raw Data
+
+##### `path`
+Specifies the location where the raw model outputs are stored.  
+In the example, we use:
+
+```yaml
+path: pi_concentrations-expt-c55f7217
+```
+Replace this with the actual path to your data on Gadi.
+
+output
+Indicates the specific output number you want to cmorise.
+For example, to cmorise output075, use:
+
+```yaml
+output: 075
+```
+output_range
+Use this attribute if you want to cmorise a range of outputs.
+The input format should be a list containing the starting and ending output numbers.
+For example, to cmorise outputs output075 to output090:
+
+```yaml
+output_range: [075, 090]
+```
+This will process all outputs from output075 through output090 (inclusive).
+
+#### Step3: Run the Tool
+
+After completing the setup steps above, you can trigger the entire cmorisation workflow by running the following command:
+
+```bash
+ilamb-tree-generator
+```
+This will generate the CMORized data within the ILAMB-ROOT directory.
+
+Below is an example of the output directory structure after the process completes:
+
+```
+.
+├── DATA
+└── MODELS
+    └── ACCESS-ESM1-6
+        └── output918
+            ├── cSoil.nc
+            ├── cVeg.nc
+            ├── evspsbl.nc
+            ├── gpp.nc
+            ├── hfls.nc
+            ├── hfss.nc
+            ├── hurs.nc
+            ├── lai.nc
+            ├── nbp.nc
+            ├── pr.nc
+            ├── ra.nc
+            ├── rh.nc
+            ├── rlds.nc
+            ├── rlus.nc
+            ├── rsds.nc
+            ├── rsus.nc
+            ├── tasmax.nc
+            ├── tasmin.nc
+            ├── tas.nc
+            └── tsl.nc
+```
+
+#### Hint:
+
+Each `output` from ESM1_6 typically contains only **one year of data**.  
+When comparing this with ILAMB's observational datasets, the mismatch in time range can lead to failures during the benchmarking process.
+
+**Recommended approach:**  
+To ensure a meaningful comparison and avoid time-related errors, it is advised to **merge multiple outputs** together before running ILAMB.
