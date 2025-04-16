@@ -969,7 +969,46 @@ Below is an example of the output directory structure after the process complete
 ├── DATA
 └── MODELS
     └── ACCESS-ESM1-6
+        └── output915
+        └── output916
+        └── output917
         └── output918
+            ├── cSoil.nc
+            ├── cVeg.nc
+            ├── evspsbl.nc
+            ├── gpp.nc
+            ├── hfls.nc
+            ├── hfss.nc
+            ├── hurs.nc
+            ├── lai.nc
+            ├── nbp.nc
+            ├── pr.nc
+            ├── ra.nc
+            ├── rh.nc
+            ├── rlds.nc
+            ├── rlus.nc
+            ├── rsds.nc
+            ├── rsus.nc
+            ├── tasmax.nc
+            ├── tasmin.nc
+            ├── tas.nc
+            └── tsl.nc
+```
+
+#### Merge the results
+
+When using output_range to cmorise multiple outputs simultaneously, if you want to merge the results into a single file instead of storing them separately under different output directories, we provide a `merge` parameter to enable this functionality.
+
+```
+ilamb-tree-generator --datasets ./config_test.yml --ilamb_root $ILAMB_ROOT_TEST --merge True
+```
+When triggering `ilamb-tree-generator`, set `--merge True` to merge the results along the time axis. The final merged output will be stored under the `merged` directory.
+
+```
+├── DATA
+└── MODELS
+    └── ACCESS-ESM1-6
+        └── merged
             ├── cSoil.nc
             ├── cVeg.nc
             ├── evspsbl.nc
