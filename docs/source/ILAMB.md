@@ -958,7 +958,7 @@ This will process all outputs from output075 through output090 (inclusive).
 After completing the setup steps above, you can trigger the entire cmorisation workflow by running the following command:
 
 ```bash
-ilamb-tree-generator
+ilamb-tree-generator --datasets config.yml --ilamb_root ./ILAMB_ROOT 
 ```
 This will generate the CMORized data within the ILAMB-ROOT directory.
 
