@@ -1000,9 +1000,9 @@ Below is an example of the output directory structure after the process complete
 When using output_range to cmorise multiple outputs simultaneously, if you want to merge the results into a single file instead of storing them separately under different output directories, we provide a `merge` parameter to enable this functionality.
 
 ```
-ilamb-tree-generator --datasets ./config_test.yml --ilamb_root $ILAMB_ROOT_TEST --merge True
+ilamb-tree-generator --datasets ./config_test.yml --ilamb_root $ILAMB_ROOT_TEST --merge
 ```
-When triggering `ilamb-tree-generator`, set `--merge True` to merge the results along the time axis. The final merged output will be stored under the `merged` directory.
+When triggering `ilamb-tree-generator`, set `--merge` to merge the results along the time axis, default it's `False` without the `--merge` flag. The final merged output will be stored under the `merged` directory.
 
 ```
 ├── DATA
@@ -1038,3 +1038,5 @@ When comparing this with ILAMB's observational datasets, the mismatch in time ra
 
 **Recommended approach:**  
 To ensure a meaningful comparison and avoid time-related errors, it is advised to **merge multiple outputs** together before running ILAMB.
+
+Some output paths do not contain the corresponding NetCDF files, which may cause the program to raise an error due to missing data. Please be cautious when selecting data.
