@@ -880,6 +880,7 @@ Once it finish, you will get your CMORised data been stored by variable names in
             ├── tas.nc
             └── tsl.nc
 ```
+
 ### New Version of `ilamb-tree-genertor` for ESM1_6
 
 This notebook is a simple tutorial to demonstrate how to use the updated `ilamb-tree-generator` on **Gadi** to process raw **ESM1_6** data.
@@ -900,6 +901,16 @@ Amon:
 ```python
 'evspsbl','hfls','hfss','hurs','pr','rlds','rlus','rsds','rsus','tasmax','tasmin','tas'
 ```
+
+#### Prerequisites
+
+- You have an active **Gadi account**.
+- You are a member of the following NCI projects:  
+  `ct11`, `p66`, and `xp65`.
+
+  > ⚠️ Access to raw ESM1_6 data and the `ilamb-tree-generator` module requires membership in these projects.  
+  > You can check your project memberships using `myprojects` or request access via the [NCI MyAccount portal](https://my.nci.org.au).
+
 #### Step1: Load the Module
 
 `ilamb-tree-generator` has already been deployed as a module under the xp65 group. Gadi users can load the module directly to use it.
@@ -1030,6 +1041,53 @@ When triggering `ilamb-tree-generator`, set `--merge` to merge the results along
             ├── tas.nc
             └── tsl.nc
 ```
+### Example
+Below is a complete example that demonstrates how to use `ilamb-tree-generator` to cmorise multiple outputs from ESM1_6 on Gadi and merge them for ILAMB evaluation.
+
+First, to run the entire workflow, we need three files in one directory: `config.yml`, `config.cfg`, and `pbs.job`.
+
+![ESM1_6](./image/ESM1_6.png)
+
+`config.yml`:
+```yml
+datasets:
+ - {mip: non-CMIP, institute: CSIRO, dataset: ACCESS-ESM1-6, project: CMIP6, path: /scratch/p66/pjb581/access-esm/archive/pi_concentrations-expt-c55f7217, output_range: [start,end]}
+```
+`config.cfg`:
+
+ILAMB config file, Configure them according to your experimental objectives. In this example, we use `CMIP6.cfg`.
+
+`pbs.job`:
+
+```bash
+#!/bin/bash
+# For help with PBS directives on Gadi, go to https://opus.nci.org.au/display/Help/PBS+Directives+Explained
+#PBS -N ILAMB
+#PBS -l wd
+#PBS -P {Your_Project}
+#PBS -q express
+#PBS -l walltime=02:00:00  
+#PBS -l ncpus=48
+#PBS -l mem=190GB           
+#PBS -l jobfs=10GB        
+#PBS -l storage=gdata/xp65+gdata/ct11+gdata/p66+{group_where_your_file_located}
+#PBS -l jobfs=10GB
+
+module use /g/data/xp65/public/modules/
+module load conda/analysis3-25.04
+
+export ILAMB_ROOT=$PWD/ILAMB_ROOT_ESM1_6
+export BUILD_DIR=./ILAMB_ESM1_6
+
+
+ilamb-tree-generator --datasets config.yml --ilamb_root $ILAMB_ROOT --merge
+
+mpiexec -n 12 ilamb-run --config ./CMIP6.cfg --model_root $ILAMB_ROOT/MODELS/ --model_year [start_year_of_data] [target_year] --regions global --build_dir $BUILD_DIR
+```
+
+Above is an example pbs.job file. Fill in the parameters according to your experiment. The ilamb-tree-generator will cmorise the ESM1_6 data and build the directory structure that ILAMB can read, after which you can run ILAMB for your analysis.
+
+One important thing to note is that since the ESM1_6 raw data are currently all simulated, you will need to apply a time shift if you want to compare them with observational data.
 
 #### Hint:
 
@@ -1038,5 +1096,3 @@ When comparing this with ILAMB's observational datasets, the mismatch in time ra
 
 **Recommended approach:**  
 To ensure a meaningful comparison and avoid time-related errors, it is advised to **merge multiple outputs** together before running ILAMB.
-
-Some output paths do not contain the corresponding NetCDF files, which may cause the program to raise an error due to missing data. Please be cautious when selecting data.
