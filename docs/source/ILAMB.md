@@ -660,28 +660,6 @@ An Australia-focussed ILAMB run with the same setup as above and default `aust` 
 
 For even more detailed region definitions, you can follow the <a href="https://www.ilamb.org/doc/custom_regions.html" target="_blank">ILAMB tutorial for custom regions</a>.
 
-### Fix your setup with `ilamb_doctor`
-
-`ilamb_doctor ` is a script you can use to diagnosing some missing model values or what is incorrect or missing from a given analysis. It takes options similar to `ilamb-run` and is used in the following way:
-```[ILAMB/test]$ ilamb-doctor --config test.cfg --model_root ${ILAMB_ROOT}/MODELS/CLM
-
-Searching for model results in /Users/ncf/ILAMB//MODELS/CLM
-
-                                   CLM40n16r228
-                                   CLM45n16r228
-                                   CLM50n18r229
-
-We will now look in each model for the variables in the ILAMB
-configure file you specified (test.cfg). The color green is used to reflect
-which variables were found in the model. The color red is used to
-reflect that a model is missing a required variable.
-
-                           Biomass/GlobalCarbon CLM40n16r228 biomass or cVeg
-                                        ... (abbreviated)
-                            Precipitation/GPCP2 CLM50n18r229 pr
-```
-Here we have run the command on some inputs in our test directory. You will see a list of the confrontations we run and the variables which are required or their synonyms. What is missing in this tutorial is the text coloring which will indicate if a given model has the required variables.
-
 ### Advanced Visualisation with the Land Model Testbed (LMT) unified dashboard
 
 The Land Model Testbed (LMT) unified dashboard, powered by Tabulator and the jQuery JS library, illustrates the high-level results from analysis and benchmarking software in the form of data tables (similar to a 2-D heat map). It treats the result as a function of multiple independent (hyperdimensional) inputs and displays the result as a combination of the two inputs.
